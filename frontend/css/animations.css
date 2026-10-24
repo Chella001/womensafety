@@ -1,0 +1,138 @@
+/* ==========================================================================
+   SafeHer — motion
+   All motion is decorative and disabled for users who prefer reduced motion.
+   ========================================================================== */
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes art-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes float-a {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(-6px, 10px, 0) rotate(1.4deg); }
+}
+
+@keyframes float-b {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50%      { transform: translate3d(8px, -9px, 0) rotate(-1.6deg); }
+}
+
+@keyframes drift {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50%      { transform: translate3d(3vw, 2vw, 0) scale(1.08); }
+}
+
+@keyframes sos-pulse {
+  0%   { box-shadow: 0 18px 34px -12px rgba(214, 51, 132, 0.55), 0 0 0 0 rgba(236, 90, 160, 0.45); }
+  70%  { box-shadow: 0 18px 34px -12px rgba(214, 51, 132, 0.55), 0 0 0 22px rgba(236, 90, 160, 0); }
+  100% { box-shadow: 0 18px 34px -12px rgba(214, 51, 132, 0.55), 0 0 0 0 rgba(236, 90, 160, 0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+/* ---------- Entrance ---------- */
+
+.page,
+.dash {
+  animation: fade-in 0.6s ease both;
+}
+
+.brand {
+  animation: rise-in 0.7s var(--ease) 0.05s both;
+}
+
+.hero-copy__title  { animation: rise-in 0.8s var(--ease) 0.12s both; }
+.hero-copy__rule   { animation: rise-in 0.8s var(--ease) 0.2s both; }
+.hero-copy__lead   { animation: rise-in 0.8s var(--ease) 0.26s both; }
+.feature:nth-child(1) { animation: rise-in 0.8s var(--ease) 0.34s both; }
+.feature:nth-child(2) { animation: rise-in 0.8s var(--ease) 0.42s both; }
+.feature:nth-child(3) { animation: rise-in 0.8s var(--ease) 0.5s both; }
+
+.hero-art img {
+  animation: art-in 1s var(--ease) 0.2s both;
+}
+
+.card {
+  animation: rise-in 0.85s var(--ease) 0.25s both;
+}
+
+/* Dashboard cards rise in one after another (--i is set per card in dashboard.html) */
+.dash-card {
+  animation: rise-in 0.7s var(--ease) calc(0.12s + var(--i, 0) * 0.07s) both;
+}
+
+/* ---------- Ambient background ---------- */
+
+.decor--tr { transform-origin: 100% 0;   animation: float-a 9s ease-in-out infinite; }
+.decor--bl { transform-origin: 0 100%;   animation: float-b 11s ease-in-out infinite; }
+.decor--br { transform-origin: 100% 100%; animation: float-a 13s ease-in-out infinite; }
+.decor--mr { transform-origin: 100% 50%; animation: float-b 10s ease-in-out infinite; }
+.decor--tc { transform-origin: 50% 0;    animation: float-a 12s ease-in-out infinite; }
+
+.bg__glow--lilac { animation: drift 18s ease-in-out infinite; }
+.bg__glow--pink  { animation: drift 22s ease-in-out infinite reverse; }
+.bg__glow--rose  { animation: drift 26s ease-in-out infinite; }
+
+/* ---------- Interaction ---------- */
+
+.btn.is-loading .btn__spinner {
+  animation: spin 0.7s linear infinite;
+}
+
+.field.is-shaking {
+  animation: shake 0.38s ease;
+}
+
+.dialog[open] {
+  animation: rise-in 0.35s var(--ease) both;
+}
+
+.dialog[open]::backdrop {
+  animation: fade-in 0.3s ease both;
+}
+
+.sos-btn:not(:disabled) {
+  animation: sos-pulse 2.6s ease-out infinite;
+}
+
+/* ---------- Reduced motion ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0s !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* The spinner is the only indicator of progress, so keep it turning slowly. */
+  .btn.is-loading .btn__spinner {
+    animation: spin 1.6s linear infinite !important;
+  }
+
+  .btn--primary:hover:not(:disabled),
+  .social__btn:hover:not(:disabled) {
+    transform: none;
+  }
+}

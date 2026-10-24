@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin login · SafeHer</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6edff">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+  <a class="skip-link" href="#admin-login-card">Skip to the login form</a>
+
+  <div class="admin-login">
+    <div class="bg" aria-hidden="true">
+      <span class="bg__glow bg__glow--lilac"></span>
+      <span class="bg__glow bg__glow--pink"></span>
+      <span class="bg__glow bg__glow--rose"></span>
+    </div>
+
+    <a class="brand__link admin-login__brand" href="../login.html" aria-label="SafeHer — back to the user login">
+      <img class="brand__logo" src="../assets/icons/logo.svg" alt="" width="52" height="56">
+      <span class="brand__text">
+        <span class="brand__name">Safe<span>Her</span></span>
+        <span class="brand__tagline">Administration</span>
+      </span>
+    </a>
+
+    <main class="card admin-login__card" id="admin-login-card" aria-labelledby="admin-login-title">
+      <img class="card__logo" src="../assets/icons/logo.svg" alt="" width="36" height="39">
+      <h1 class="card__title" id="admin-login-title">Admin login</h1>
+      <p class="card__subtitle">For the SafeHer administrator only</p>
+
+      <div class="form-alert" id="form-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="form-alert-text"></span>
+        </div>
+      </div>
+
+      <!-- Step 1: phone number -->
+      <form class="form" id="phone-form" novalidate>
+        <div class="form-group">
+          <div class="phone-row">
+            <div class="field field--select">
+              <label class="sr-only" for="country">Country code</label>
+              <select class="field__input field__select" id="country" name="country" autocomplete="tel-country-code"></select>
+            </div>
+            <div class="field">
+              <label class="sr-only" for="phone">Phone number</label>
+              <svg class="icon field__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#phone"/></svg>
+              <input class="field__input" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national"
+                     placeholder="Phone number" required maxlength="20" aria-describedby="phone-error">
+            </div>
+          </div>
+          <p class="field-error" id="phone-error" aria-live="polite"><span></span></p>
+        </div>
+
+        <button class="btn btn--primary" type="submit" id="send-btn">
+          <span class="btn__label">Send code</span>
+          <svg class="icon btn__arrow" aria-hidden="true"><use href="../assets/icons/sprite.svg#arrow-right"/></svg>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <!-- Step 2: verification code -->
+      <form class="form" id="code-form" novalidate hidden>
+        <p class="otp-hint">Enter the 6-digit code for <strong id="sent-to"></strong></p>
+        <div class="form-group">
+          <div class="field">
+            <label class="sr-only" for="code">Verification code</label>
+            <svg class="icon field__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#lock"/></svg>
+            <input class="field__input otp-input" id="code" name="code" type="text" inputmode="numeric"
+                   autocomplete="one-time-code" placeholder="••••••" maxlength="7" aria-describedby="code-error">
+          </div>
+          <p class="field-error" id="code-error" aria-live="polite"><span></span></p>
+        </div>
+
+        <button class="btn btn--primary" type="submit" id="verify-btn">
+          <span class="btn__label">Verify &amp; open console</span>
+          <svg class="icon btn__arrow" aria-hidden="true"><use href="../assets/icons/sprite.svg#arrow-right"/></svg>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+
+        <div class="form-row">
+          <button class="link-btn" type="button" id="resend-btn" disabled>
+            <span class="btn__label">Resend code</span>
+          </button>
+          <button class="link-btn" type="button" id="change-btn">Change number</button>
+        </div>
+      </form>
+
+      <div id="recaptcha-container" aria-hidden="true"></div>
+
+      <p class="card__footer">Not an administrator? <a href="../login.html">Go to the user login</a></p>
+      <p class="admin-login__note">Signing in here does not make anyone an administrator. Access is decided by the server, and every attempt is checked there.</p>
+    </main>
+  </div>
+
+  <script type="module" src="../js/admin-login.js"></script>
+</body>
+</html>

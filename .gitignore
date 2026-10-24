@@ -1,0 +1,31 @@
+# Secrets — never commit these
+.env
+.env.*
+serviceAccount*.json
+*-firebase-adminsdk-*.json
+firebase-credentials*.json
+secrets/
+
+# Backend build output
+backend/target/
+*.class
+*.log
+hs_err_pid*
+
+# IDE / OS
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.DS_Store
+Thumbs.db
+
+# Node (if you use `npx serve` etc.)
+node_modules/
+
+# Separate clone of github.com/Chella001/women_safetyApp (not part of this repository's history)
+women_safetyApp/
+
+# UI test run output (screenshots, browser profiles)
+tests/ui/output/

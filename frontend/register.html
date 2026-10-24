@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create account · SafeHer</title>
+  <meta name="description" content="Create your SafeHer account — quick SOS, live location sharing and your trusted circle.">
+  <meta name="theme-color" content="#f6edff">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <a class="skip-link" href="#register-card">Skip to registration form</a>
+
+  <div class="page">
+    <!-- Decorative background -->
+    <div class="bg" aria-hidden="true">
+      <span class="bg__glow bg__glow--lilac"></span>
+      <span class="bg__glow bg__glow--pink"></span>
+      <span class="bg__glow bg__glow--rose"></span>
+      <span class="bg__wave"></span>
+      <img class="decor decor--tr" src="assets/images/deco-top-right.svg" alt="">
+      <img class="decor decor--bl" src="assets/images/deco-bottom-left.svg" alt="">
+      <img class="decor decor--br" src="assets/images/deco-bottom-right.svg" alt="">
+      <img class="decor decor--mr" src="assets/images/deco-mid-right.svg" alt="">
+    </div>
+
+    <header class="brand">
+      <a class="brand__link" href="login.html" aria-label="SafeHer — A Safer Tomorrow">
+        <img class="brand__logo" src="assets/icons/logo.svg" alt="" width="52" height="56">
+        <span class="brand__text">
+          <span class="brand__name">Safe<span>Her</span></span>
+          <span class="brand__tagline">A Safer Tomorrow</span>
+        </span>
+      </a>
+    </header>
+
+    <!-- Registration card -->
+    <main class="card" id="register-card" aria-labelledby="register-title">
+      <img class="card__logo" src="assets/icons/logo.svg" alt="" width="36" height="39">
+      <h1 class="card__title" id="register-title">Create account</h1>
+      <p class="card__subtitle">Join SafeHer with your phone number</p>
+
+      <div class="form-alert" id="form-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="form-alert-text"></span>
+        </div>
+      </div>
+
+      <!-- Step 1: details -->
+      <form class="form" id="phone-form" novalidate>
+        <div class="form-group">
+          <div class="field">
+            <label class="sr-only" for="name">Full name</label>
+            <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#user"/></svg>
+            <input class="field__input" id="name" name="name" type="text" autocomplete="name"
+                   placeholder="Full name" required maxlength="60" aria-describedby="name-error">
+          </div>
+          <p class="field-error" id="name-error" aria-live="polite"><span></span></p>
+        </div>
+
+        <div class="form-group">
+          <div class="phone-row">
+            <div class="field field--select">
+              <label class="sr-only" for="country">Country code</label>
+              <select class="field__input field__select" id="country" name="country" autocomplete="tel-country-code"></select>
+            </div>
+            <div class="field">
+              <label class="sr-only" for="phone">Phone number</label>
+              <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#phone"/></svg>
+              <input class="field__input" id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel-national"
+                     placeholder="Phone number" required maxlength="20" aria-describedby="phone-error">
+            </div>
+          </div>
+          <p class="field-error" id="phone-error" aria-live="polite"><span></span></p>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox checkbox--consent">
+            <input type="checkbox" id="consent" name="consent" aria-describedby="consent-error">
+            <span class="checkbox__box" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#check"/></svg></span>
+            <span class="checkbox__label">I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms</a> and
+              <a href="privacy.html" target="_blank" rel="noopener">Privacy Policy</a></span>
+          </label>
+          <p class="field-error" id="consent-error" aria-live="polite"><span></span></p>
+        </div>
+
+        <button class="btn btn--primary" type="submit" id="send-btn">
+          <span class="btn__label">Send code</span>
+          <svg class="icon btn__arrow" aria-hidden="true"><use href="assets/icons/sprite.svg#arrow-right"/></svg>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </form>
+
+      <!-- Step 2: verification code -->
+      <form class="form" id="code-form" novalidate hidden>
+        <p class="otp-hint">Enter the 6-digit code sent to <strong id="sent-to"></strong></p>
+        <div class="form-group">
+          <div class="field">
+            <label class="sr-only" for="code">Verification code</label>
+            <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#lock"/></svg>
+            <input class="field__input otp-input" id="code" name="code" type="text" inputmode="numeric"
+                   autocomplete="one-time-code" placeholder="••••••" maxlength="7" aria-describedby="code-error">
+          </div>
+          <p class="field-error" id="code-error" aria-live="polite"><span></span></p>
+        </div>
+
+        <button class="btn btn--primary" type="submit" id="verify-btn">
+          <span class="btn__label">Verify &amp; create account</span>
+          <svg class="icon btn__arrow" aria-hidden="true"><use href="assets/icons/sprite.svg#arrow-right"/></svg>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+
+        <div class="form-row">
+          <button class="link-btn" type="button" id="resend-btn" disabled>
+            <span class="btn__label">Resend code</span>
+          </button>
+          <button class="link-btn" type="button" id="change-btn">Change number</button>
+        </div>
+      </form>
+
+      <div id="recaptcha-container" aria-hidden="true"></div>
+
+      <p class="card__footer">Already have an account? <a href="login.html">Log in</a></p>
+    </main>
+
+    <!-- Left-hand marketing copy -->
+    <section class="hero-copy" aria-labelledby="hero-title">
+      <h2 class="hero-copy__title" id="hero-title">Confident Women Build <span>Safer</span> Communities</h2>
+      <span class="hero-copy__rule" aria-hidden="true"></span>
+      <p class="hero-copy__lead">Technology, Awareness and Support for a safer, stronger tomorrow.</p>
+
+      <ul class="features">
+        <li class="feature">
+          <span class="feature__icon feature__icon--pink" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#siren"/></svg></span>
+          <span class="feature__body"><strong>Quick SOS</strong><span>Get help instantly in emergencies.</span></span>
+        </li>
+        <li class="feature">
+          <span class="feature__icon feature__icon--violet" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#pin"/></svg></span>
+          <span class="feature__body"><strong>Share Location</strong><span>Real-time location sharing with trusted contacts.</span></span>
+        </li>
+        <li class="feature">
+          <span class="feature__icon feature__icon--rose" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#people"/></svg></span>
+          <span class="feature__body"><strong>Trusted Circle</strong><span>Stay connected with family and friends.</span></span>
+        </li>
+      </ul>
+    </section>
+
+    <figure class="hero-art">
+      <div class="hero-art__frame">
+        <img src="assets/images/hero-woman.png" alt="Illustration of a confident woman with long dark wavy hair, eyes closed and chin lifted, among soft pink and purple leaves" width="963" height="542">
+      </div>
+    </figure>
+  </div>
+
+  <script type="module" src="js/register.js"></script>
+</body>
+</html>

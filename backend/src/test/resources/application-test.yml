@@ -1,0 +1,16 @@
+app:
+  firebase:
+    project-id: test-project
+    credentials-path: ""
+    check-revoked: true
+  admin:
+    uids: uid-admin
+  policy:
+    retention-purge-enabled: false
+  notifications:
+    mode: TEST
+    worker-enabled: false
+  rate-limit:
+    enabled: false
+  cors:
+    allowed-origins: http://localhost:5500

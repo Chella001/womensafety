@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin · SafeHer</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#f6edff">
+  <link rel="icon" type="image/svg+xml" href="../assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="../css/styles.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/admin.css">
+  <link rel="stylesheet" href="../css/animations.css">
+</head>
+<body>
+  <a class="skip-link" href="#admin-main">Skip to content</a>
+
+  <div class="admin-shell">
+    <div class="bg" aria-hidden="true">
+      <span class="bg__glow bg__glow--lilac"></span>
+      <span class="bg__glow bg__glow--pink"></span>
+    </div>
+
+    <div id="sidebar-wrap" class="sidebar-wrap">
+      <aside class="sidebar" id="sidebar" aria-label="Administration">
+        <a class="brand__link sidebar__brand" href="../dashboard.html" aria-label="SafeHer — back to my dashboard">
+          <img class="brand__logo" src="../assets/icons/logo.svg" alt="" width="44" height="48">
+          <span class="brand__text">
+            <span class="brand__name">Safe<span>Her</span></span>
+            <span class="brand__tagline">Administration</span>
+          </span>
+        </a>
+
+        <nav class="sidebar__nav" aria-label="Admin sections">
+          <a class="sidebar__link" href="#dashboard" data-view="dashboard">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#grid"/></svg><span>Dashboard</span>
+          </a>
+          <a class="sidebar__link" href="#users" data-view="users">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#people"/></svg><span>Users</span>
+          </a>
+          <a class="sidebar__link" href="#alerts" data-view="alerts">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#siren"/></svg><span>SOS alerts</span>
+            <span class="count-badge" id="alerts-badge" hidden aria-label="new alerts"></span>
+          </a>
+          <a class="sidebar__link" href="#notifications" data-view="notifications">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#bell"/></svg><span>Notifications</span>
+          </a>
+          <a class="sidebar__link" href="#reports" data-view="reports">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#chart"/></svg><span>Reports</span>
+          </a>
+          <a class="sidebar__link" href="#audit" data-view="audit">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#clipboard"/></svg><span>Audit logs</span>
+          </a>
+          <a class="sidebar__link" href="#settings" data-view="settings">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#gear"/></svg><span>Settings</span>
+          </a>
+        </nav>
+
+        <div class="sidebar__foot">
+          <div class="sidebar__who">
+            <span class="avatar avatar--sm" id="sidebar-avatar" aria-hidden="true">A</span>
+            <span class="sidebar__name" id="sidebar-name">Administrator</span>
+          </div>
+          <a class="btn btn--outline btn--small btn--block" href="../dashboard.html">My dashboard</a>
+          <button class="btn btn--outline btn--small btn--block" type="button" id="logout-btn">
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#logout"/></svg>
+            <span class="btn__label">Log out</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="admin-body">
+      <header class="admin-topbar" id="admin-topbar">
+        <button class="btn btn--outline btn--small sidebar-toggle" type="button" id="sidebar-toggle" aria-expanded="false" aria-controls="sidebar">
+          <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#menu"/></svg>
+          <span>Menu</span>
+        </button>
+        <h1 class="admin-topbar__title" id="view-title">Dashboard</h1>
+        <span class="live" id="live-status" data-state="reconnecting" role="status">Reconnecting…</span>
+        <span class="live__time" id="last-refreshed"></span>
+        <button class="btn btn--small btn--new-alert" type="button" id="new-alert-indicator" hidden>
+          <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#bell"/></svg><span id="new-alert-text">New SOS alert</span>
+        </button>
+        <span class="badge">Administrator</span>
+        <button class="btn btn--outline btn--small" type="button" id="refresh-btn">Refresh</button>
+        <button class="btn btn--outline btn--small admin-topbar__logout" type="button" id="logout-btn-top">
+          <span class="btn__label">Log out</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </header>
+
+      <main class="admin-main" id="admin-main" aria-busy="true">
+        <section class="dash-card" id="admin-denied" hidden>
+          <h2 class="dash-title">Access denied</h2>
+          <p class="dash-lead" id="denied-text">This area is only for the SafeHer administrator.</p>
+          <p class="denied-actions">
+            <a class="btn btn--primary btn--inline" href="../dashboard.html">Back to my dashboard</a>
+            <a class="link-btn" href="login.html">Admin login</a>
+          </p>
+        </section>
+
+        <section class="dash-card" id="admin-loading">
+          <h2 class="dash-title">Checking access…</h2>
+        </section>
+
+        <div id="admin-content" hidden>
+          <div class="form-alert" id="admin-alert" data-type="error" aria-live="assertive">
+            <div class="form-alert__inner">
+              <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+              <span class="form-alert__text" id="admin-alert-text"></span>
+            </div>
+          </div>
+
+          <p class="dash-note dash-note--stale" id="stale-note" hidden>
+            <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+            <span>Live updates are not connected and this data may be out of date. Use Refresh to reload it.</span>
+          </p>
+
+          <!-- ================= Dashboard ================= -->
+          <section class="admin-view" id="view-dashboard" aria-labelledby="view-title">
+            <p class="empty" id="overview-loading">Loading…</p>
+            <div id="overview-body" hidden>
+              <div class="stats" aria-label="Accounts">
+                <div class="stat"><span class="stat__value" id="stat-total">0</span><span class="stat__label">Registered users</span></div>
+                <div class="stat"><span class="stat__value" id="stat-active">0</span><span class="stat__label">Active</span></div>
+                <div class="stat"><span class="stat__value" id="stat-suspended">0</span><span class="stat__label">Deactivated</span></div>
+                <div class="stat"><span class="stat__value" id="stat-verified">0</span><span class="stat__label">Phone verified</span></div>
+              </div>
+              <div class="stats" aria-label="SOS alert records">
+                <div class="stat stat--warn"><span class="stat__value" id="stat-new">0</span><span class="stat__label">New alerts</span></div>
+                <div class="stat"><span class="stat__value" id="stat-ack">0</span><span class="stat__label">Acknowledged</span></div>
+                <div class="stat"><span class="stat__value" id="stat-resolved">0</span><span class="stat__label">Resolved</span></div>
+                <div class="stat"><span class="stat__value" id="stat-cancelled">0</span><span class="stat__label">Cancelled by user</span></div>
+                <div class="stat"><span class="stat__value" id="stat-alerts">0</span><span class="stat__label">SOS records, all time</span></div>
+                <div class="stat"><span class="stat__value" id="stat-24h">0</span><span class="stat__label">Last 24 hours</span></div>
+                <div class="stat"><span class="stat__value" id="stat-reports">0</span><span class="stat__label">Open incident reports</span></div>
+              </div>
+
+              <div class="admin-two">
+                <div class="dash-card">
+                  <h2 class="dash-card__title">Registrations per day</h2>
+                  <p class="hint" id="chart-registrations-total"></p>
+                  <div class="bars" id="chart-registrations"></div>
+                </div>
+                <div class="dash-card">
+                  <h2 class="dash-card__title">SOS records per day</h2>
+                  <p class="hint" id="chart-alerts-total"></p>
+                  <div class="bars bars--pink" id="chart-alerts"></div>
+                </div>
+              </div>
+
+              <div class="admin-two">
+                <div class="dash-card">
+                  <h2 class="dash-card__title">Recent SOS activity</h2>
+                  <ul class="record-list" id="recent-alerts"></ul>
+                  <p class="empty" id="recent-alerts-empty" hidden>No SOS records yet.</p>
+                </div>
+                <div class="dash-card">
+                  <h2 class="dash-card__title">Recent administrative actions</h2>
+                  <ul class="record-list" id="recent-audit"></ul>
+                  <p class="empty" id="recent-audit-empty" hidden>No administrative actions yet.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- ================= Users ================= -->
+          <section class="admin-view" id="view-users" aria-label="Users" hidden>
+            <div class="dash-card">
+              <form class="toolbar" id="user-filter" role="search">
+                <div class="field">
+                  <label class="sr-only" for="user-search">Search by name, phone number or account ID</label>
+                  <svg class="icon field__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#user"/></svg>
+                  <input class="field__input" id="user-search" type="search" placeholder="Search name, phone or ID" maxlength="80" autocomplete="off">
+                </div>
+                <div class="field field--select">
+                  <label class="sr-only" for="user-status">Filter by status</label>
+                  <select class="field__input field__select" id="user-status">
+                    <option value="">All statuses</option>
+                    <option value="ACTIVE">Active</option>
+                    <option value="SUSPENDED">Deactivated</option>
+                  </select>
+                </div>
+                <button class="btn btn--outline" type="submit">Search</button>
+              </form>
+              <p class="hint">Searches the 500 newest accounts. Phone numbers are masked here; opening a user shows the full number and is recorded in the audit log.</p>
+              <p class="empty" id="users-loading" hidden>Loading…</p>
+              <div class="table-wrap"><table class="table" id="users-table">
+                <caption class="sr-only">Registered users</caption>
+                <thead><tr><th scope="col">Name</th><th scope="col">Phone</th><th scope="col">Status</th><th scope="col">Registered</th><th scope="col">Last login</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody></tbody>
+              </table></div>
+              <p class="empty" id="users-empty" hidden>No users match.</p>
+              <nav class="pager" id="users-pager" aria-label="Users pages" hidden></nav>
+            </div>
+          </section>
+
+          <!-- ================= SOS alerts ================= -->
+          <section class="admin-view" id="view-alerts" aria-label="SOS alerts" hidden>
+            <div class="dash-card">
+              <p class="dash-note">
+                <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#info"/></svg>
+                <span>SafeHer tries to message a user's <strong>verified</strong> contacts and to push a notice to registered admin devices; the pills show what was <strong>recorded</strong> (accepted is not delivered, test is not sent). <strong>It does not contact the police or any emergency service.</strong> "Acknowledged" and "Resolved" only record what an administrator did here.</span>
+              </p>
+              <form class="toolbar toolbar--alerts" id="alert-filter" role="search">
+                <div class="field">
+                  <label class="sr-only" for="alert-q">Search by alert ID</label>
+                  <svg class="icon field__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#clipboard"/></svg>
+                  <input class="field__input" id="alert-q" type="search" placeholder="Alert ID" maxlength="64" autocomplete="off">
+                </div>
+                <div class="field field--select">
+                  <label class="sr-only" for="alert-status">Status</label>
+                  <select class="field__input field__select" id="alert-status">
+                    <option value="">All statuses</option>
+                    <option value="ACTIVE">New</option>
+                    <option value="ACKNOWLEDGED">Acknowledged</option>
+                    <option value="RESOLVED">Resolved</option>
+                    <option value="CANCELLED">Cancelled by user</option>
+                  </select>
+                </div>
+                <div class="field field--date">
+                  <label class="field__caption" for="alert-from">From</label>
+                  <input class="field__input" id="alert-from" type="date">
+                </div>
+                <div class="field field--date">
+                  <label class="field__caption" for="alert-to">To</label>
+                  <input class="field__input" id="alert-to" type="date">
+                </div>
+                <button class="btn btn--outline" type="submit">Apply</button>
+                <button class="btn btn--ghost" type="button" id="alert-clear">Clear</button>
+              </form>
+              <p class="hint">Coordinates are hidden in this list. Opening a record shows any location the user chose to share, and is written to the audit log.</p>
+              <p class="empty" id="alerts-loading" hidden>Loading…</p>
+              <div class="table-wrap"><table class="table" id="alerts-table">
+                <caption class="sr-only">SOS alert records</caption>
+                <thead><tr><th scope="col">Created</th><th scope="col">Alert</th><th scope="col">User</th><th scope="col">Status</th><th scope="col">Location</th><th scope="col">Notifications</th><th scope="col">Attention</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody></tbody>
+              </table></div>
+              <p class="empty" id="alerts-empty-admin" hidden>No SOS alerts match.</p>
+              <nav class="pager" id="alerts-pager" aria-label="SOS alert pages" hidden></nav>
+            </div>
+          </section>
+
+          <!-- ================= Notifications ================= -->
+          <section class="admin-view" id="view-notifications" aria-label="Notifications" hidden>
+            <p class="empty" id="notifications-loading" hidden>Loading…</p>
+            <div class="admin-two">
+              <div class="dash-card">
+                <h2 class="dash-card__title">How alerts are delivered</h2>
+                <dl class="facts" id="notifications-facts"></dl>
+                <p class="dash-note">
+                  <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#info"/></svg>
+                  <span id="notifications-note"></span>
+                </p>
+              </div>
+              <div class="dash-card">
+                <h2 class="dash-card__title">Push to this browser</h2>
+                <p class="hint">Register this browser to receive a short "new SOS alert" push. The push contains no location, name or phone number, and "accepted by the push service" does not mean anyone saw it — acknowledging an alert is a separate action.</p>
+                <button class="btn btn--primary btn--inline" type="button" id="push-enable">
+                  <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#bell"/></svg>
+                  <span class="btn__label">Enable push on this browser</span>
+                  <span class="btn__spinner" aria-hidden="true"></span>
+                </button>
+                <p class="hint" id="push-support-note"></p>
+                <div class="table-wrap"><table class="table" id="devices-table">
+                  <caption class="sr-only">Your registered devices</caption>
+                  <thead><tr><th scope="col">Device</th><th scope="col">Registered</th><th scope="col">Last seen</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+                  <tbody></tbody>
+                </table></div>
+                <p class="empty" id="devices-empty" hidden>You have no registered devices.</p>
+              </div>
+            </div>
+            <div class="dash-card">
+              <h2 class="dash-card__title">Recent delivery problems</h2>
+              <div class="table-wrap"><table class="table" id="problems-table">
+                <caption class="sr-only">Alerts whose notifications failed or only partly succeeded</caption>
+                <thead><tr><th scope="col">Created</th><th scope="col">Alert</th><th scope="col">Contact messages</th><th scope="col">Admin push</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody></tbody>
+              </table></div>
+              <p class="empty" id="problems-empty" hidden>No recent delivery problems.</p>
+            </div>
+          </section>
+
+          <!-- ================= Reports ================= -->
+          <section class="admin-view" id="view-reports" aria-label="Reports" hidden>
+            <div class="dash-card">
+              <h2 class="dash-card__title">SOS record summary</h2>
+              <form class="toolbar toolbar--alerts" id="report-form">
+                <div class="field field--select">
+                  <label class="sr-only" for="report-period">Period</label>
+                  <select class="field__input field__select" id="report-period">
+                    <option value="daily">Daily</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="monthly">Monthly</option>
+                  </select>
+                </div>
+                <div class="field field--date">
+                  <label class="field__caption" for="report-from">From</label>
+                  <input class="field__input" id="report-from" type="date">
+                </div>
+                <div class="field field--date">
+                  <label class="field__caption" for="report-to">To</label>
+                  <input class="field__input" id="report-to" type="date">
+                </div>
+                <button class="btn btn--outline" type="submit">Run</button>
+                <button class="btn btn--primary btn--small" type="button" id="report-export">
+                  <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#download"/></svg>
+                  <span class="btn__label">Download CSV</span>
+                  <span class="btn__spinner" aria-hidden="true"></span>
+                </button>
+              </form>
+              <p class="hint" id="summary-range">Leave the dates empty for the default range (30 days, 12 weeks or 12 months).</p>
+              <p class="dash-note" id="summary-truncated" hidden>
+                <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+                <span>This range holds more records than a report reads, so the figures are a lower bound. Choose a shorter range.</span>
+              </p>
+              <p class="empty" id="summary-loading" hidden>Loading…</p>
+              <div class="table-wrap"><table class="table" id="summary-table">
+                <caption class="sr-only">SOS records per period</caption>
+                <thead><tr><th scope="col">Period</th><th scope="col">Total</th><th scope="col">New</th><th scope="col">Acknowledged</th><th scope="col">Resolved</th><th scope="col">Cancelled</th><th scope="col">Location shared</th></tr></thead>
+                <tbody></tbody>
+              </table></div>
+              <p class="empty" id="summary-empty" hidden>No SOS records in this period.</p>
+              <p class="hint">Counts records created in each period by their current status. The CSV contains dates and counts only, no personal data, and each download is recorded in the audit log.</p>
+            </div>
+
+            <div class="dash-card">
+              <h2 class="dash-card__title">Incident reports</h2>
+              <p class="empty" id="incidents-loading" hidden>Loading…</p>
+              <div class="table-wrap"><table class="table" id="incidents-table">
+                <caption class="sr-only">Incident reports filed by users</caption>
+                <thead><tr><th scope="col">Filed</th><th scope="col">User</th><th scope="col">Category</th><th scope="col">Description</th><th scope="col">Status</th><th scope="col"><span class="sr-only">Actions</span></th></tr></thead>
+                <tbody></tbody>
+              </table></div>
+              <p class="empty" id="incidents-empty" hidden>No incident reports yet.</p>
+            </div>
+          </section>
+
+          <!-- ================= Audit ================= -->
+          <section class="admin-view" id="view-audit" aria-label="Audit logs" hidden>
+            <div class="dash-card">
+              <form class="toolbar toolbar--audit" id="audit-filter">
+                <div class="field field--select">
+                  <label class="sr-only" for="audit-type">Type</label>
+                  <select class="field__input field__select" id="audit-type">
+                    <option value="">All entries</option>
+                    <option value="ADMIN_ACTION">Administrative actions</option>
+                    <option value="SECURITY_EVENT">Security events (denied access)</option>
+                    <option value="SYSTEM_EVENT">Automatic server work (notification processing)</option>
+                  </select>
+                </div>
+              </form>
+              <p class="hint">Read-only and append-only: this console and the API offer no way to edit or delete an entry. Times come from the database server.</p>
+              <p class="empty" id="audit-loading" hidden>Loading…</p>
+              <div class="table-wrap"><table class="table" id="audit-table">
+                <caption class="sr-only">Audit log</caption>
+                <thead><tr><th scope="col">Time</th><th scope="col">Type</th><th scope="col">Action</th><th scope="col">Outcome</th><th scope="col">By</th><th scope="col">Target</th><th scope="col">Details</th></tr></thead>
+                <tbody></tbody>
+              </table></div>
+              <p class="empty" id="audit-empty" hidden>No entries yet.</p>
+              <nav class="pager" id="audit-pager" aria-label="Audit log pages" hidden></nav>
+            </div>
+          </section>
+
+          <!-- ================= Settings ================= -->
+          <section class="admin-view" id="view-settings" aria-label="Settings" hidden>
+            <p class="empty" id="settings-loading" hidden>Loading…</p>
+            <div id="settings-body" hidden>
+              <div class="admin-two">
+                <div class="dash-card">
+                  <h2 class="dash-card__title">Your administrator session</h2>
+                  <dl class="facts" id="settings-account"></dl>
+                  <button class="btn btn--outline btn--block" type="button" id="settings-logout-all">
+                    <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#logout"/></svg>
+                    <span class="btn__label">Sign out of all devices</span>
+                    <span class="btn__spinner" aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="dash-card">
+                  <h2 class="dash-card__title">Server policy (read-only)</h2>
+                  <dl class="facts" id="settings-policy"></dl>
+                  <p class="dash-note">
+                    <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#info"/></svg>
+                    <span id="settings-notification"></span>
+                  </p>
+                  <p class="hint">Who is an administrator is set only by the server's <code>ADMIN_UIDS</code> setting; it cannot be changed from this page.</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- User detail -->
+  <dialog class="dialog" id="user-dialog" aria-labelledby="user-dialog-title">
+    <div class="dialog__form">
+      <h2 class="dialog__title" id="user-dialog-title">User</h2>
+      <p class="hint">Viewing full details is recorded in the audit log.</p>
+      <dl class="facts" id="user-facts"></dl>
+      <div class="dialog__actions"><button class="btn btn--ghost" type="button" id="user-close">Close</button></div>
+    </div>
+  </dialog>
+
+  <!-- Deactivate / reactivate -->
+  <dialog class="dialog" id="status-dialog" aria-labelledby="status-title">
+    <form class="dialog__form" id="status-form" novalidate>
+      <h2 class="dialog__title" id="status-title">Deactivate account?</h2>
+      <p class="dialog__text" id="status-text"></p>
+      <div class="form-alert" id="status-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="status-alert-text"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="field">
+          <label class="sr-only" for="status-reason">Reason (optional)</label>
+          <input class="field__input field__input--plain" id="status-reason" type="text" maxlength="200" placeholder="Reason (optional, recorded in the audit log)" autocomplete="off">
+        </div>
+      </div>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="status-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit" id="status-confirm">
+          <span class="btn__label" id="status-confirm-label">Confirm</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Alert detail -->
+  <dialog class="dialog dialog--wide" id="alert-dialog" aria-labelledby="alert-dialog-title">
+    <div class="dialog__form">
+      <h2 class="dialog__title" id="alert-dialog-title">SOS record</h2>
+      <p class="hint">Opening this alert, including any location, was written to the audit log.</p>
+      <p class="dash-note dash-note--stale" id="alert-changed" hidden>
+        <svg class="icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+        <span>This alert changed. <button class="link-btn" type="button" id="alert-reload">Reload it</button> (this is recorded in the audit log again).</span>
+      </p>
+      <div class="flag-row" id="alert-flags" hidden></div>
+      <div class="form-alert" id="alert-dialog-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="alert-dialog-alert-text"></span>
+        </div>
+      </div>
+      <dl class="facts" id="alert-facts"></dl>
+
+      <div id="alert-map-wrap" hidden>
+        <button class="btn btn--outline btn--small" type="button" id="alert-map-toggle" aria-expanded="false" aria-controls="alert-map">Show map</button>
+        <p class="hint">The map loads from openstreetmap.org, which will see this location. Only this alert's location is shown; SafeHer does not track users.</p>
+        <div id="alert-map" class="map-box"></div>
+      </div>
+
+      <h3 class="contact-form__title">Delivery records</h3>
+      <p class="empty" id="alert-deliveries-loading" hidden>Loading…</p>
+      <div class="table-wrap"><table class="table" id="alert-deliveries">
+        <caption class="sr-only">Per-recipient delivery records (recipients are masked)</caption>
+        <thead><tr><th scope="col">Recipient</th><th scope="col">Channel</th><th scope="col">Status</th><th scope="col">Attempts</th><th scope="col">Failure code</th><th scope="col">History</th></tr></thead>
+        <tbody></tbody>
+      </table></div>
+      <p class="empty" id="alert-deliveries-empty" hidden>No recipients were planned yet.</p>
+
+      <h3 class="contact-form__title">History</h3>
+      <ul class="record-list" id="alert-events" aria-label="Alert history"></ul>
+      <p class="empty" id="alert-events-empty" hidden>No history entries.</p>
+
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="alert-close">Close</button>
+        <button class="btn btn--outline" type="button" id="alert-acknowledge" hidden>Acknowledge…</button>
+        <button class="btn btn--primary" type="button" id="alert-resolve" hidden>Resolve…</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Confirm acknowledge -->
+  <dialog class="dialog" id="ack-dialog" aria-labelledby="ack-title">
+    <form class="dialog__form" id="ack-form">
+      <h2 class="dialog__title" id="ack-title">Acknowledge this alert?</h2>
+      <p class="dialog__text">This records that an administrator has seen the alert. <strong>It does not contact the user, their contacts, the police or anyone else.</strong> It is written to the audit log.</p>
+      <div class="form-alert" id="ack-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="ack-alert-text"></span>
+        </div>
+      </div>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="ack-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit" id="ack-confirm">
+          <span class="btn__label">Acknowledge</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Resolve alert (note required) -->
+  <dialog class="dialog" id="resolve-alert-dialog" aria-labelledby="resolve-alert-title">
+    <form class="dialog__form" id="resolve-alert-form" novalidate>
+      <h2 class="dialog__title" id="resolve-alert-title">Resolve this alert</h2>
+      <p class="dialog__text">Describe what was done. The note stays on the record (the user does not see it) and the action is written to the audit log. Resolving does not notify anyone.</p>
+      <div class="form-alert" id="resolve-alert-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="resolve-alert-alert-text"></span>
+        </div>
+      </div>
+      <label class="sr-only" for="resolve-alert-note">Resolution note</label>
+      <textarea class="field__input field__textarea" id="resolve-alert-note" rows="4" minlength="3" maxlength="500" placeholder="Resolution note (3–500 characters)"></textarea>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="resolve-alert-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit" id="resolve-alert-confirm">
+          <span class="btn__label">Mark resolved</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Resolve incident report -->
+  <dialog class="dialog" id="resolve-dialog" aria-labelledby="resolve-title">
+    <form class="dialog__form" id="resolve-form" novalidate>
+      <h2 class="dialog__title" id="resolve-title">Resolve report</h2>
+      <p class="dialog__text" id="resolve-text"></p>
+      <div class="form-alert" id="resolve-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="../assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="resolve-alert-text"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="field">
+          <label class="sr-only" for="resolve-note">Note to the user (optional)</label>
+          <input class="field__input field__input--plain" id="resolve-note" type="text" maxlength="500" placeholder="Note (optional, visible to the user)" autocomplete="off">
+        </div>
+      </div>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="resolve-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit" id="resolve-confirm">
+          <span class="btn__label">Mark resolved</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="../js/admin.js"></script>
+</body>
+</html>

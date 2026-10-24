@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard · SafeHer</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f6edff">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+
+  <div class="dash">
+    <div class="bg" aria-hidden="true">
+      <span class="bg__glow bg__glow--lilac"></span>
+      <span class="bg__glow bg__glow--pink"></span>
+      <span class="bg__glow bg__glow--rose"></span>
+      <img class="decor decor--tr" src="assets/images/deco-top-right.svg" alt="">
+      <img class="decor decor--bl" src="assets/images/deco-bottom-left.svg" alt="">
+    </div>
+
+    <header class="dash-header">
+      <a class="brand__link" href="dashboard.html" aria-label="SafeHer — A Safer Tomorrow">
+        <img class="brand__logo" src="assets/icons/logo.svg" alt="" width="52" height="56">
+        <span class="brand__text">
+          <span class="brand__name">Safe<span>Her</span></span>
+          <span class="brand__tagline">A Safer Tomorrow</span>
+        </span>
+      </a>
+
+      <nav class="dash-nav" aria-label="Dashboard sections">
+        <a href="#sos">SOS</a>
+        <a href="#contacts">Contacts</a>
+        <a href="#location">Location</a>
+        <a href="#alerts">Activity</a>
+        <a href="#tips">Tips</a>
+        <a href="#profile">Account</a>
+      </nav>
+
+      <div class="dash-header__actions">
+        <a class="btn btn--outline" id="admin-link" href="admin/index.html" hidden>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#shield-sos"/></svg>
+          <span>Admin</span>
+        </a>
+        <div class="menu" id="profile-menu">
+          <button class="user-chip" type="button" id="menu-btn" aria-expanded="false" aria-controls="menu-panel" aria-label="Profile menu">
+            <span class="avatar avatar--sm" id="chip-avatar" aria-hidden="true">·</span>
+            <span class="user-chip__name" id="chip-name">Loading…</span>
+            <svg class="icon user-chip__caret" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-down"/></svg>
+          </button>
+          <div class="menu__panel" id="menu-panel" hidden>
+            <div class="menu__who">
+              <strong id="menu-name">—</strong>
+              <span id="menu-phone">—</span>
+            </div>
+            <a class="menu__item" href="#profile" id="menu-account">Account settings</a>
+            <a class="menu__item" href="admin/index.html" id="menu-admin" hidden>Admin console</a>
+            <button class="menu__item" type="button" id="menu-logout">Log out</button>
+          </div>
+        </div>
+        <button class="btn btn--outline" type="button" id="logout-btn">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#logout"/></svg>
+          <span class="btn__label">Log out</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </header>
+
+    <main class="dash-main" id="main" aria-busy="true">
+      <div class="form-alert dash-alert" id="form-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="form-alert-text"></span>
+        </div>
+      </div>
+
+      <section class="dash-card dash-card--welcome" style="--i:0" aria-labelledby="dash-title">
+        <h1 class="dash-title" id="dash-title">Checking your session…</h1>
+        <p class="dash-lead" id="dash-lead">Verifying your sign-in with the SafeHer server.</p>
+        <ul class="chips" aria-label="Status">
+          <li class="chip chip--ok" id="chip-status" hidden>
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#shield-sos"/></svg>
+            <span id="chip-status-text">Account: active</span>
+          </li>
+          <li class="chip chip--ok" id="chip-account" hidden>
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#success"/></svg>
+            <span>Phone verified</span>
+          </li>
+          <li class="chip" id="chip-sharing">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#pin"/></svg>
+            <span>Live sharing: off</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="dash-card dash-card--sos" id="sos" style="--i:1" aria-labelledby="sos-title">
+        <h2 class="dash-card__title" id="sos-title">Emergency help</h2>
+        <button class="sos-btn" type="button" id="sos-btn" aria-haspopup="dialog">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#siren"/></svg>
+          <span class="sos-btn__text">SOS</span>
+        </button>
+        <p class="dash-note">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#info"/></svg>
+          <span id="sos-card-note">An SOS alert is saved to your account and SafeHer tries to message your <strong>verified</strong> emergency contacts. <strong>SafeHer does not contact the police or any emergency service</strong>, and cannot guarantee a message is received. If you are in danger, call your emergency number.</span>
+        </p>
+        <p class="testmode-banner" id="sos-testmode-card" hidden>
+          <strong>TEST MODE</strong> — messages are simulated. Nothing is sent to anyone.
+        </p>
+      </section>
+
+      <section class="dash-card dash-card--contacts" id="contacts" style="--i:2" aria-labelledby="contacts-title">
+        <div class="dash-card__head">
+          <h2 class="dash-card__title" id="contacts-title">Emergency contacts</h2>
+          <span class="count" id="contact-count" aria-live="polite">0 / 5</span>
+        </div>
+
+        <div class="form-alert" id="contacts-alert" data-type="error" aria-live="assertive">
+          <div class="form-alert__inner">
+            <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+            <span class="form-alert__text" id="contacts-alert-text"></span>
+          </div>
+        </div>
+
+        <p class="empty" id="contacts-loading">Loading your contacts…</p>
+        <ul class="contact-list" id="contact-list" aria-label="Your emergency contacts" hidden></ul>
+        <p class="empty" id="contacts-empty" hidden>No contacts yet. Add someone you trust below. Adding a contact does not message them; they must be verified before they can receive an SOS message.</p>
+
+        <form class="contact-form" id="contact-form" novalidate>
+          <h3 class="contact-form__title">Add a contact</h3>
+          <div class="contact-form__grid">
+            <div class="form-group">
+              <div class="field">
+                <label class="sr-only" for="contact-name">Contact name</label>
+                <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#user"/></svg>
+                <input class="field__input" id="contact-name" name="name" type="text" placeholder="Name" autocomplete="off" maxlength="60" required aria-describedby="contact-name-error">
+              </div>
+              <p class="field-error" id="contact-name-error" aria-live="polite"><span></span></p>
+            </div>
+            <div class="form-group">
+              <div class="field">
+                <label class="sr-only" for="contact-phone">Phone number</label>
+                <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#phone"/></svg>
+                <input class="field__input" id="contact-phone" name="phone" type="tel" inputmode="tel" placeholder="Phone (e.g. +91 98765 43210)" autocomplete="off" maxlength="24" required aria-describedby="contact-phone-error">
+              </div>
+              <p class="field-error" id="contact-phone-error" aria-live="polite"><span></span></p>
+            </div>
+            <div class="form-group">
+              <div class="field">
+                <label class="sr-only" for="contact-relationship">Relationship (optional)</label>
+                <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#people"/></svg>
+                <input class="field__input" id="contact-relationship" name="relationship" type="text" placeholder="Relationship (optional)" autocomplete="off" maxlength="40" aria-describedby="contact-relationship-error">
+              </div>
+              <p class="field-error" id="contact-relationship-error" aria-live="polite"><span></span></p>
+            </div>
+          </div>
+          <label class="checkbox checkbox--consent">
+            <input type="checkbox" id="contact-consent">
+            <span class="checkbox__box" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#check"/></svg></span>
+            <span class="checkbox__label">This person has agreed to receive SafeHer emergency messages from me. (They must also confirm a code we text them before any SOS message is sent.)</span>
+          </label>
+          <button class="btn btn--primary btn--inline" type="submit" id="contact-submit">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#plus"/></svg>
+            <span class="btn__label">Add contact</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+      </section>
+
+      <section class="dash-card dash-card--location" id="location" style="--i:3" aria-labelledby="location-title">
+        <div class="dash-card__head">
+          <h2 class="dash-card__title" id="location-title">Your location</h2>
+          <span class="pill pill--off" id="sharing-pill">Sharing: off</span>
+        </div>
+
+        <div class="form-alert" id="location-alert" data-type="error" aria-live="assertive">
+          <div class="form-alert__inner">
+            <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+            <span class="form-alert__text" id="location-alert-text"></span>
+          </div>
+        </div>
+
+        <dl class="facts" id="location-facts">
+          <div><dt>Permission</dt><dd id="loc-permission">Unknown</dd></div>
+          <div><dt>Latitude</dt><dd id="loc-lat">—</dd></div>
+          <div><dt>Longitude</dt><dd id="loc-lng">—</dd></div>
+          <div><dt>Accuracy</dt><dd id="loc-acc">—</dd></div>
+          <div><dt>Updated</dt><dd id="loc-time">—</dd></div>
+        </dl>
+
+        <div class="location-actions">
+          <button class="btn btn--primary btn--inline" type="button" id="locate-btn">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#crosshair"/></svg>
+            <span class="btn__label">Show my current location</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+          <a class="link-btn" id="map-link" href="#" target="_blank" rel="noopener noreferrer" hidden>View on map</a>
+        </div>
+
+        <p class="dash-note">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#info"/></svg>
+          <span><strong>Why SafeHer asks for location:</strong> so you can see where you are on this screen and, only if you choose to when you press SOS, attach it to the alert record. Your browser always asks first, and you can say no. SafeHer never tracks you in the background, and nothing is saved unless you tick "Include my current location" on an SOS alert. Live sharing with contacts is not available yet.</span>
+        </p>
+      </section>
+
+      <section class="dash-card dash-card--alerts" id="alerts" style="--i:4" aria-labelledby="alerts-title">
+        <div class="dash-card__head">
+          <h2 class="dash-card__title" id="alerts-title">Recent activity</h2>
+        </div>
+        <p class="hint">Your SOS alert records, newest first. A record is not a delivered notification, and "acknowledged" only means the SafeHer administrator has seen the record, not that help was sent.</p>
+        <div class="form-alert" id="alerts-alert" data-type="error" aria-live="assertive">
+          <div class="form-alert__inner">
+            <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+            <span class="form-alert__text" id="alerts-alert-text"></span>
+          </div>
+        </div>
+        <p class="empty" id="alerts-loading">Loading your alerts…</p>
+        <ul class="record-list" id="alert-list" aria-label="Your recent SOS alerts" hidden></ul>
+        <p class="empty" id="alerts-empty" hidden>No alerts yet.</p>
+      </section>
+
+      <section class="dash-card dash-card--reports" id="reports" style="--i:5" aria-labelledby="reports-title">
+        <div class="dash-card__head">
+          <h2 class="dash-card__title" id="reports-title">Incident reports</h2>
+          <button class="btn btn--outline btn--small" type="button" id="report-open">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#plus"/></svg>
+            <span>New report</span>
+          </button>
+        </div>
+        <p class="empty" id="reports-loading">Loading your reports…</p>
+        <ul class="record-list" id="report-list" aria-label="Your incident reports" hidden></ul>
+        <p class="empty" id="reports-empty" hidden>You haven't filed any reports.</p>
+      </section>
+
+      <section class="dash-card dash-card--tips" id="tips" style="--i:6" aria-labelledby="tips-title">
+        <h2 class="dash-card__title" id="tips-title">Safety tips</h2>
+        <ul class="tips">
+          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Trust your instincts.</strong> If a place or person feels wrong, leave and move toward other people.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Tell someone your plan.</strong> Share where you're going and when you expect to arrive.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Keep your phone ready.</strong> Charge it, and put your emergency contacts on speed dial.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Stay on lit, busy routes</strong> at night and keep one ear free of headphones.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Know your emergency number.</strong> In India, dial <a href="tel:112">112</a> for police, fire and ambulance.</span></li>
+        </ul>
+      </section>
+
+      <section class="dash-card dash-card--profile" id="profile" style="--i:7" aria-labelledby="profile-title">
+        <h2 class="dash-card__title" id="profile-title">Account</h2>
+        <div class="profile">
+          <span class="avatar" id="profile-avatar" aria-hidden="true">·</span>
+          <div class="profile__who">
+            <strong id="profile-name">—</strong>
+            <span id="profile-phone">—</span>
+          </div>
+        </div>
+
+        <div class="form-alert" id="account-alert" data-type="error" aria-live="assertive">
+          <div class="form-alert__inner">
+            <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+            <span class="form-alert__text" id="account-alert-text"></span>
+          </div>
+        </div>
+
+        <form class="name-form" id="name-form" novalidate>
+          <div class="form-group">
+            <div class="field">
+              <label class="sr-only" for="profile-name-input">Full name</label>
+              <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#user"/></svg>
+              <input class="field__input" id="profile-name-input" name="fullName" type="text" maxlength="60" autocomplete="name" aria-describedby="profile-name-error">
+            </div>
+            <p class="field-error" id="profile-name-error" aria-live="polite"><span></span></p>
+          </div>
+          <button class="btn btn--outline" type="submit" id="name-save">
+            <span class="btn__label">Save name</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </form>
+
+        <dl class="facts">
+          <div><dt>Member since</dt><dd id="dash-created">—</dd></div>
+          <div><dt>Last login</dt><dd id="dash-last-login">—</dd></div>
+          <div><dt>Account ID</dt><dd><code class="uid" id="profile-uid">—</code></dd></div>
+        </dl>
+
+        <button class="btn btn--outline btn--block" type="button" id="logout-all-btn">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#logout"/></svg>
+          <span class="btn__label">Sign out of all devices</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn--outline btn--block" type="button" id="logout-btn-2">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#logout"/></svg>
+          <span class="btn__label">Log out</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <!-- SOS -->
+  <dialog class="dialog" id="sos-dialog" aria-labelledby="sos-dialog-title">
+    <div class="dialog__form">
+      <h2 class="dialog__title" id="sos-dialog-title">Emergency help</h2>
+
+      <div class="form-alert" id="sos-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="sos-alert-text"></span>
+        </div>
+      </div>
+
+      <p class="testmode-banner" id="sos-testmode" hidden><strong>TEST MODE</strong> — messages are simulated. Nothing is sent to anyone.</p>
+
+      <div id="sos-step-confirm">
+        <p class="dialog__text">
+          Creating an alert saves it to your account and tries to message your <strong>verified</strong> emergency contacts
+          and the SafeHer safety team. <strong>SafeHer does not contact the police or any emergency service</strong> and cannot guarantee
+          that anyone reads a message in time. If you are in danger, call for help now:
+        </p>
+        <a class="btn btn--sos" id="sos-call-emergency" href="tel:112">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#phone"/></svg>
+          <span>Call <span id="sos-number">112</span></span>
+        </a>
+        <p class="dash-note" id="sos-recipients">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#info"/></svg>
+          <span id="sos-recipients-text">Checking who would be messaged…</span>
+        </p>
+        <label class="checkbox checkbox--consent">
+          <input type="checkbox" id="sos-include-location">
+          <span class="checkbox__box" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#check"/></svg></span>
+          <span class="checkbox__label">Share my current location with my verified contacts and the safety team (your browser will ask for permission). If it can't be found, the alert is still created.</span>
+        </label>
+        <div class="dialog__actions">
+          <button class="btn btn--ghost" type="button" id="sos-close">Close</button>
+          <button class="btn btn--primary" type="button" id="sos-create">
+            <span class="btn__label">Create SOS alert</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="sos-step-done" hidden>
+        <p class="dialog__text" id="sos-headline"><strong>Alert created.</strong></p>
+        <dl class="facts" id="sos-facts">
+          <div><dt>Alert</dt><dd id="sos-status">—</dd></div>
+          <div><dt>Created at</dt><dd id="sos-time">—</dd></div>
+          <div><dt>Location</dt><dd id="sos-location">—</dd></div>
+          <div><dt>Notifications</dt><dd><span class="pill" id="sos-notif-pill">—</span> <span id="sos-notif-text" aria-live="polite">—</span></dd></div>
+        </dl>
+        <p class="hint" id="sos-notif-refresh" hidden></p>
+        <p class="hint" id="sos-cancel-note" hidden></p>
+        <div>
+          <h3 class="contact-form__title">Call a contact yourself</h3>
+          <ul class="contact-list contact-list--compact" id="sos-contacts"></ul>
+          <p class="empty" id="sos-no-contacts" hidden>You haven't added any emergency contacts yet.</p>
+        </div>
+        <div class="dialog__actions">
+          <button class="btn btn--ghost" type="button" id="sos-done-close">Close</button>
+          <button class="btn btn--outline" type="button" id="sos-cancel-alert">
+            <span class="btn__label">Cancel this alert</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Confirm removal -->
+  <dialog class="dialog" id="confirm-dialog" aria-labelledby="confirm-title">
+    <form class="dialog__form" id="confirm-form">
+      <h2 class="dialog__title" id="confirm-title">Remove contact?</h2>
+      <p class="dialog__text" id="confirm-text"></p>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="confirm-cancel">Keep</button>
+        <button class="btn btn--primary" type="submit" id="confirm-ok">
+          <span class="btn__label">Remove</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Verify contact -->
+  <dialog class="dialog" id="verify-dialog" aria-labelledby="verify-title">
+    <div class="dialog__form">
+      <h2 class="dialog__title" id="verify-title">Verify contact</h2>
+      <div class="form-alert" id="verify-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="verify-alert-text"></span>
+        </div>
+      </div>
+      <p class="dialog__text" id="verify-intro">We will text a 6-digit code to this contact. Ask them to read it to you, then enter it here. Your own login does not verify their number.</p>
+      <p class="testmode-banner" id="verify-testmode" hidden><strong>TEST MODE</strong> — no SMS was sent. Use this code: <code id="verify-testcode">——</code></p>
+      <button class="btn btn--primary" type="button" id="verify-send">
+        <span class="btn__label">Send code</span>
+        <span class="btn__spinner" aria-hidden="true"></span>
+      </button>
+      <form id="verify-form" novalidate hidden>
+        <div class="form-group">
+          <div class="field">
+            <label class="sr-only" for="verify-code">6-digit code</label>
+            <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#check"/></svg>
+            <input class="field__input" id="verify-code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="6-digit code" aria-describedby="verify-code-error">
+          </div>
+          <p class="field-error" id="verify-code-error" aria-live="polite"><span></span></p>
+        </div>
+        <div class="dialog__actions">
+          <button class="btn btn--ghost" type="button" id="verify-resend">Send a new code</button>
+          <button class="btn btn--primary" type="submit" id="verify-confirm">
+            <span class="btn__label">Confirm</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </form>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="verify-close">Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Edit contact -->
+  <dialog class="dialog" id="edit-dialog" aria-labelledby="edit-title">
+    <form class="dialog__form" id="edit-form" novalidate>
+      <h2 class="dialog__title" id="edit-title">Edit contact</h2>
+      <div class="form-alert" id="edit-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="edit-alert-text"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="field">
+          <label class="sr-only" for="edit-name">Contact name</label>
+          <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#user"/></svg>
+          <input class="field__input" id="edit-name" type="text" maxlength="60" placeholder="Name" autocomplete="off" aria-describedby="edit-name-error">
+        </div>
+        <p class="field-error" id="edit-name-error" aria-live="polite"><span></span></p>
+      </div>
+      <div class="form-group">
+        <div class="field">
+          <label class="sr-only" for="edit-phone">Phone number</label>
+          <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#phone"/></svg>
+          <input class="field__input" id="edit-phone" type="tel" inputmode="tel" maxlength="24" placeholder="Phone" autocomplete="off" aria-describedby="edit-phone-error">
+        </div>
+        <p class="field-error" id="edit-phone-error" aria-live="polite"><span></span></p>
+      </div>
+      <div class="form-group">
+        <div class="field">
+          <label class="sr-only" for="edit-relationship">Relationship (optional)</label>
+          <svg class="icon field__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#people"/></svg>
+          <input class="field__input" id="edit-relationship" type="text" maxlength="40" placeholder="Relationship (optional)" autocomplete="off" aria-describedby="edit-relationship-error">
+        </div>
+        <p class="field-error" id="edit-relationship-error" aria-live="polite"><span></span></p>
+      </div>
+      <label class="checkbox checkbox--consent">
+        <input type="checkbox" id="edit-consent">
+        <span class="checkbox__box" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#check"/></svg></span>
+        <span class="checkbox__label">This person has agreed to receive SafeHer emergency messages from me.</span>
+      </label>
+      <p class="hint" id="edit-reset-note" hidden>Changing the phone number removes this contact's verification and consent. You will need to verify the new number.</p>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="edit-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit" id="edit-save">
+          <span class="btn__label">Save changes</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Incident report -->
+  <dialog class="dialog" id="report-dialog" aria-labelledby="report-title">
+    <form class="dialog__form" id="report-form" novalidate>
+      <h2 class="dialog__title" id="report-title">Report an incident</h2>
+      <p class="dialog__text">Reports are read by the SafeHer administrator. This is not an emergency line — if you are in danger, call your emergency number.</p>
+      <div class="form-alert" id="report-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="report-alert-text"></span>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="field field--select">
+          <label class="sr-only" for="report-category">Category</label>
+          <select class="field__input field__select" id="report-category" aria-describedby="report-category-error">
+            <option value="HARASSMENT">Harassment</option>
+            <option value="STALKING">Stalking</option>
+            <option value="ASSAULT">Assault</option>
+            <option value="UNSAFE_LOCATION">Unsafe location</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+        <p class="field-error" id="report-category-error" aria-live="polite"><span></span></p>
+      </div>
+      <div class="form-group">
+        <label class="sr-only" for="report-description">What happened?</label>
+        <textarea class="field__input field__textarea" id="report-description" rows="5" maxlength="2000"
+                  placeholder="What happened? (10–2000 characters)" aria-describedby="report-description-error"></textarea>
+        <p class="field-error" id="report-description-error" aria-live="polite"><span></span></p>
+      </div>
+      <div class="dialog__actions">
+        <button class="btn btn--ghost" type="button" id="report-cancel">Cancel</button>
+        <button class="btn btn--primary" type="submit" id="report-submit">
+          <span class="btn__label">Submit report</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
