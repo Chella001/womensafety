@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>SafeHer</title>
   <script>
-    // Live Server opens the project root. Send the browser to the app, and use "localhost" rather than "127.0.0.1":
-    // Firebase phone sign-in only works on authorised domains, and the API's CORS list expects localhost.
+    // Live Server opens the project root. Send the browser to the public landing page, and use "localhost" rather than
+    // "127.0.0.1": Firebase phone sign-in only works on authorised domains, and the API's CORS list expects localhost.
     (function () {
       var host = location.hostname === "127.0.0.1" ? "localhost" : location.hostname;
-      var target = location.protocol + "//" + host + (location.port ? ":" + location.port : "") + "/frontend/login.html";
+      var target = location.protocol + "//" + host + (location.port ? ":" + location.port : "") + "/frontend/home.html";
       location.replace(target);
     })();
   </script>
@@ -19,6 +19,6 @@
   </style>
 </head>
 <body>
-  <p>Opening SafeHer… If nothing happens, open <a href="frontend/login.html">the login page</a>.</p>
+  <p>Opening SafeHer… If nothing happens, open <a href="frontend/home.html">the home page</a>.</p>
 </body>
 </html>

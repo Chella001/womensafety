@@ -1,0 +1,365 @@
+/* Public pages (home, help, 404). Uses the theme tokens and buttons from styles.css. */
+
+.pub {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100svh;
+  overflow-x: hidden;
+}
+
+.pub-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40rem 26rem at 8% 0%, rgba(214, 188, 245, 0.45), transparent 70%),
+    radial-gradient(34rem 24rem at 100% 18%, rgba(238, 111, 174, 0.16), transparent 70%);
+}
+
+.pub a.btn {
+  text-decoration: none;
+}
+
+/* ---------- Header ---------- */
+
+.pub-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  width: 100%;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: var(--sp-5) clamp(1rem, 5vw, 3rem);
+}
+
+.pub-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2) var(--sp-4);
+}
+
+.pub-nav__link {
+  color: var(--c-ink-soft);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.pub-nav__link:hover {
+  color: var(--c-primary);
+}
+
+.pub-nav__link[aria-current="page"] {
+  color: var(--c-brand);
+  font-weight: 700;
+}
+
+.pub-nav .btn {
+  width: auto;
+  min-height: 2.6rem;
+  padding: 0 1rem;
+  font-size: 0.9rem;
+}
+
+/* ---------- Main ---------- */
+
+.pub-main {
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  width: 100%;
+  max-width: 76rem;
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 5vw, 3rem) var(--sp-7);
+}
+
+.pub-card {
+  padding: clamp(1.25rem, 3vw, 2.25rem);
+  border-radius: var(--radius-lg);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow-card);
+}
+
+.pub-h2 {
+  margin-bottom: var(--sp-4);
+  color: var(--c-brand);
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.2;
+}
+
+.pub-h3 {
+  margin: 0 0 var(--sp-2);
+  color: var(--c-brand);
+  font-size: 1.1rem;
+}
+
+.pub-lead {
+  color: var(--c-ink-soft);
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+
+.pub-note {
+  margin-top: var(--sp-4);
+  color: var(--c-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+}
+
+.hero__title {
+  color: var(--c-brand);
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 5.5vw, 3.6rem);
+  line-height: 1.08;
+}
+
+.hero__title span {
+  color: var(--c-accent);
+}
+
+.hero__lead {
+  margin: var(--sp-4) 0 var(--sp-5);
+  color: var(--c-ink-soft);
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+}
+
+.hero__actions .btn {
+  width: auto;
+  min-width: 11rem;
+}
+
+.hero__urgent {
+  margin-top: var(--sp-5);
+  padding: 0.75rem 1rem;
+  border-left: 4px solid var(--c-danger);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--c-danger-bg);
+  color: #7a1533;
+  font-size: 0.95rem;
+}
+
+.hero__urgent a {
+  color: #7a1533;
+  font-weight: 700;
+}
+
+.hero__art img {
+  width: 100%;
+  max-width: 28rem;
+  height: auto;
+  margin: 0 auto;
+}
+
+/* ---------- Is / is not ---------- */
+
+.two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-5);
+}
+
+.ticks {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.ticks li {
+  position: relative;
+  padding-left: 1.6rem;
+  color: var(--c-ink-soft);
+  line-height: 1.5;
+}
+
+.ticks li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  color: var(--c-success);
+  font-weight: 700;
+}
+
+.ticks--no li::before {
+  content: "✕";
+  color: var(--c-danger);
+}
+
+/* ---------- Steps ---------- */
+
+.steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--sp-4);
+  counter-reset: step;
+}
+
+.step {
+  position: relative;
+  padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-lavender-50);
+  counter-increment: step;
+}
+
+.step::before {
+  content: counter(step);
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: var(--sp-2);
+  border-radius: 50%;
+  background: var(--grad-btn);
+  color: #fff;
+  font-weight: 700;
+}
+
+.step p {
+  color: var(--c-ink-soft);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* ---------- FAQ ---------- */
+
+.faq {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.faq details {
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-md);
+  background: var(--c-lavender-50);
+}
+
+.faq summary {
+  padding: 0.85rem 1rem;
+  color: var(--c-brand);
+  font-weight: 600;
+  cursor: pointer;
+  list-style-position: inside;
+}
+
+.faq summary:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-md);
+}
+
+.faq details > :not(summary) {
+  margin: 0 1rem 0.9rem;
+  color: var(--c-ink-soft);
+  line-height: 1.55;
+}
+
+.faq ul {
+  padding-left: 1.2rem;
+  list-style: disc;
+}
+
+/* ---------- Footer ---------- */
+
+.pub-footer {
+  margin-top: auto;
+  padding: var(--sp-5) clamp(1rem, 5vw, 3rem);
+  border-top: 1px solid var(--c-border);
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.pub-footer__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  max-width: 76rem;
+  margin: 0 auto;
+  color: var(--c-muted);
+  font-size: 0.9rem;
+}
+
+.pub-footer nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2) var(--sp-4);
+}
+
+/* ---------- 404 ---------- */
+
+.notfound {
+  display: grid;
+  justify-items: start;
+  gap: var(--sp-4);
+  max-width: 40rem;
+}
+
+.notfound__code {
+  color: var(--c-lavender-300);
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 14vw, 7rem);
+  line-height: 1;
+}
+
+.notfound .hero__actions .btn {
+  min-width: 9rem;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 879px) {
+  .hero,
+  .two-col,
+  .steps {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__art {
+    order: -1;
+  }
+
+  .hero__art img {
+    max-width: 18rem;
+  }
+}
+
+@media (max-width: 599px) {
+  .pub-header {
+    justify-content: center;
+    padding-top: var(--sp-4);
+  }
+
+  .pub-nav {
+    justify-content: center;
+  }
+
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+}
+
+.helplines--spaced {
+  margin-top: var(--sp-4);
+}

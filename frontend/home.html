@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SafeHer · A safety companion for your phone</title>
+  <meta name="description" content="SafeHer keeps your emergency contacts, an SOS button and India's helplines in one place. It is not an emergency service: in danger, call 112.">
+  <meta name="theme-color" content="#f6edff">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/helplines.css">
+  <link rel="stylesheet" href="css/public.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="pub">
+    <div class="pub-glow" aria-hidden="true"></div>
+
+    <header class="pub-header">
+      <a class="brand__link" href="home.html" aria-label="SafeHer home">
+        <img class="brand__logo" src="assets/icons/logo.svg" alt="" width="52" height="56">
+        <span class="brand__text">
+          <span class="brand__name">Safe<span>Her</span></span>
+          <span class="brand__tagline">A Safer Tomorrow</span>
+        </span>
+      </a>
+      <nav class="pub-nav" aria-label="Site">
+        <a class="pub-nav__link" href="#how">How it works</a>
+        <a class="pub-nav__link" href="#helplines">Helplines</a>
+        <a class="pub-nav__link" href="help.html">Help</a>
+        <a class="btn btn--outline" href="login.html" id="nav-login">Log in</a>
+        <a class="btn btn--primary" href="register.html" id="nav-register">Create account</a>
+      </nav>
+    </header>
+
+    <main class="pub-main" id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div>
+          <h1 class="hero__title" id="hero-title">Confident women build <span>safer</span> communities</h1>
+          <p class="hero__lead">SafeHer keeps your trusted contacts, an SOS button and India's helplines in one place on your phone. When you press SOS, it saves an alert and tries to text the contacts you have verified — and it always tells you honestly what was and wasn't sent.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="register.html">Create an account</a>
+            <a class="btn btn--outline" href="login.html">I already have an account</a>
+          </div>
+          <p class="hero__urgent" role="note"><strong>In danger right now?</strong> Don't wait for an app — call <a href="#" data-emergency-call><span data-emergency-number></span></a>. SafeHer is not an emergency service.</p>
+        </div>
+        <div class="hero__art">
+          <img src="assets/images/hero-woman.png" alt="" width="560" height="640">
+        </div>
+      </section>
+
+      <section class="pub-card" aria-labelledby="what-title">
+        <h2 class="pub-h2" id="what-title">What SafeHer is — and is not</h2>
+        <div class="two-col">
+          <div>
+            <h3 class="pub-h3">SafeHer is</h3>
+            <ul class="ticks" id="is-list">
+              <li>A place for your emergency contacts. A contact can only receive SOS messages after they agree and confirm a code sent to their phone.</li>
+              <li>An SOS button that saves an alert to your account, tries to text your verified contacts and notifies the SafeHer team.</li>
+              <li>A clear status after SOS: you see whether messages are still processing, were accepted by the SMS provider, delivered, or failed — never more than the evidence shows.</li>
+              <li>Helplines and "nearby police / hospital" searches one tap away, and a practice drill so you know the steps.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="pub-h3">SafeHer is not</h3>
+            <ul class="ticks ticks--no" id="isnt-list">
+              <li><strong>An emergency service.</strong> It does not contact the police, ambulance or fire service. Call <span data-emergency-number></span> yourself.</li>
+              <li>A guarantee that someone sees a message in time. Phones can be off, out of signal or on silent.</li>
+              <li>A tracker. Your location is read only when you press a button, and shared only if you choose to with an SOS alert.</li>
+              <li>Sending real messages while it runs in <strong>test mode</strong>: then messages are only simulated, and the app shows a TEST MODE label.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="pub-card" id="how" aria-labelledby="how-title">
+        <h2 class="pub-h2" id="how-title">How it works in 3 steps</h2>
+        <ol class="steps">
+          <li class="step">
+            <h3 class="pub-h3">Sign up with your phone</h3>
+            <p>Create an account with your phone number and a one-time code. No password to remember.</p>
+          </li>
+          <li class="step">
+            <h3 class="pub-h3">Add and verify trusted contacts</h3>
+            <p>Add up to five people. Each one agrees and confirms a code we text to them — only then can they receive an SOS message. Practise once with the SOS drill.</p>
+          </li>
+          <li class="step">
+            <h3 class="pub-h3">In trouble: call, then SOS</h3>
+            <p>Call <span data-emergency-number></span> first if you are in danger. Press SOS: the alert is saved, your verified contacts are texted with your location if you choose, and you see the real status.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="pub-card" id="helplines" aria-labelledby="helplines-title">
+        <h2 class="pub-h2" id="helplines-title">Helplines in India</h2>
+        <p class="pub-lead">Public numbers, answered by public services — not by SafeHer. Tap a number to open your phone's dialer.</p>
+        <ul class="helplines helplines--spaced" id="helplines-list" aria-label="Helpline numbers"></ul>
+        <p class="pub-note">Routing can differ between states; in several states 100 and 1091 are answered through 112.</p>
+      </section>
+
+      <section class="pub-card" id="faq" aria-labelledby="faq-title">
+        <h2 class="pub-h2" id="faq-title">Questions</h2>
+        <div class="faq">
+          <details>
+            <summary>Does SafeHer call the police for me?</summary>
+            <p>No. SafeHer never contacts the police, ambulance or fire service. If you are in danger, call <span data-emergency-number></span> yourself — the SOS screen always shows a button for it.</p>
+          </details>
+          <details>
+            <summary>Who receives my SOS?</summary>
+            <p>Only the emergency contacts you added who have agreed and verified their number, plus the SafeHer team's admin console (which may not be watched at all times). Your location is included only if you choose to share it.</p>
+          </details>
+          <details>
+            <summary>Does SafeHer track where I am?</summary>
+            <p>No. The app reads your location only when you press a button that needs it, and saves it only if you attach it to an SOS alert.</p>
+          </details>
+          <details>
+            <summary>What does "test mode" mean?</summary>
+            <p>While SafeHer runs in test mode, SOS messages are simulated and nothing is sent to anyone. The app labels this clearly so it is never mistaken for a real message.</p>
+          </details>
+        </div>
+        <p class="pub-note">More answers on the <a href="help.html">help page</a>.</p>
+      </section>
+    </main>
+
+    <footer class="pub-footer">
+      <div class="pub-footer__inner">
+        <span>© <span id="year"></span> SafeHer · Not an emergency service — in danger, call <a href="#" data-emergency-call><span data-emergency-number></span></a>.</span>
+        <nav aria-label="Footer">
+          <a href="login.html">Log in</a>
+          <a href="register.html">Create account</a>
+          <a href="help.html">Help</a>
+          <a href="terms.html">Terms</a>
+          <a href="privacy.html">Privacy</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/public.js"></script>
+</body>
+</html>
