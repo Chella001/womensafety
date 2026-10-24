@@ -28,8 +28,22 @@ export const vapidKey = "";
  */
 export const apiBaseUrl = "http://localhost:8080/api";
 
-/** The national emergency number shown by the SOS dialog (112 in India). It opens the phone's dialer. */
-export const emergencyNumber = "112";
+/**
+ * Public helplines (India), shown on the dashboard and on the public pages. This is the ONLY place the numbers are
+ * written: every page renders them from this list. They are answered by public services, not by SafeHer — tapping one
+ * opens the phone's dialer and SafeHer is not part of the call. Availability and routing can differ between states
+ * (in several states 100 and 1091 are now answered through 112).
+ */
+export const helplines = Object.freeze([
+  { number: "112", name: "Emergency response", description: "Police, fire and ambulance. The single emergency number across India — call this first if you are in danger." },
+  { number: "1091", name: "Women helpline (police)", description: "Police helpline for women facing harassment, stalking or violence." },
+  { number: "181", name: "Women helpline", description: "24×7 support for women affected by violence: counselling, legal aid, shelter and referral to One Stop Centres." },
+  { number: "100", name: "Police", description: "Police control room." },
+  { number: "1930", name: "Cyber crime helpline", description: "Report online fraud, harassment or blackmail. For money lost to fraud, call as soon as possible." },
+]);
+
+/** The number the SOS dialog offers to call: the first helpline (112 in India). */
+export const emergencyNumber = helplines[0].number;
 
 /** Country pre-selected in the phone-number fields (ISO 3166-1 alpha-2, must exist in js/phone.js). */
 export const defaultCountry = "IN";

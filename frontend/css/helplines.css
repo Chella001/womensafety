@@ -1,0 +1,212 @@
+/* Helplines list and the small shared cards used by the dashboard and the public pages. Theme tokens come from styles.css. */
+
+.helplines {
+  display: grid;
+  gap: var(--sp-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.helpline {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--sp-3);
+  align-items: center;
+  padding: 0.65rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: var(--c-lavender-50);
+  border: 1px solid var(--c-border);
+}
+
+.helpline__call {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 5.6rem;
+  min-height: 2.75rem; /* comfortable tap target */
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  background: var(--grad-btn);
+  box-shadow: var(--shadow-btn);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.helpline__call:hover {
+  background: var(--grad-btn-hover);
+}
+
+.helpline__call:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring), var(--shadow-btn);
+}
+
+.helpline__call .icon {
+  width: 1.05rem;
+  height: 1.05rem;
+}
+
+.helpline__text {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.helpline__name {
+  color: var(--c-brand);
+  font-weight: 600;
+}
+
+.helpline__desc {
+  color: var(--c-ink-soft);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 420px) {
+  .helpline {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .helpline__call {
+    justify-self: start;
+  }
+}
+
+/* ---------- Nearby help ---------- */
+
+.nearby-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--sp-3);
+}
+
+.nearby-links .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+@media (max-width: 420px) {
+  .nearby-links {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ---------- Onboarding checklist ---------- */
+
+.checklist {
+  display: grid;
+  gap: var(--sp-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.checklist__item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--sp-3);
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: var(--c-lavender-50);
+  border: 1px solid var(--c-border);
+}
+
+.checklist__mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 50%;
+  border: 2px solid var(--c-lavender-300);
+  color: transparent;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.checklist__item.is-done .checklist__mark {
+  border-color: var(--c-success);
+  background: var(--c-success);
+  color: #fff;
+}
+
+.checklist__item.is-done .checklist__label {
+  color: var(--c-muted);
+  text-decoration: line-through;
+}
+
+.checklist__label {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.checklist__label strong {
+  color: var(--c-brand);
+  font-weight: 600;
+}
+
+.checklist__label span {
+  color: var(--c-ink-soft);
+  font-size: 0.85rem;
+}
+
+.checklist__progress {
+  height: 0.45rem;
+  border-radius: 999px;
+  background: var(--c-lavender-100);
+  overflow: hidden;
+  margin-bottom: var(--sp-3);
+}
+
+.checklist__progress span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--grad-btn);
+  transition: width 0.3s ease;
+}
+
+@media (max-width: 420px) {
+  .checklist__item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .checklist__item .btn {
+    grid-column: 2;
+    justify-self: start;
+  }
+}
+
+/* ---------- Practice drill ---------- */
+
+.drill-banner {
+  margin: 0 0 var(--sp-3);
+  padding: 0.6rem 0.9rem;
+  border: 2px dashed var(--c-primary);
+  border-radius: 0.75rem;
+  background: var(--c-info-bg);
+  color: var(--c-brand);
+  font-size: 0.9rem;
+}
+
+.drill-call {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius-md);
+  background: var(--c-lavender-100);
+  color: var(--c-ink-soft);
+  font-size: 0.9rem;
+}
+
+.drill-call strong {
+  color: var(--c-brand);
+}

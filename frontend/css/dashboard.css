@@ -117,11 +117,12 @@
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
   grid-template-areas:
-    "alert    alert"
-    "welcome  sos"
-    "contacts location"
-    "alerts   reports"
-    "tips     profile";
+    "alert     alert"
+    "welcome   sos"
+    "helplines helplines"
+    "contacts  location"
+    "alerts    reports"
+    "tips      profile";
   gap: var(--sp-5);
   align-items: stretch;
   width: 100%;
@@ -132,6 +133,7 @@
 .dash-alert { grid-area: alert; }
 .dash-card--welcome { grid-area: welcome; }
 .dash-card--sos { grid-area: sos; }
+.dash-card--helplines { grid-area: helplines; }
 .dash-card--contacts { grid-area: contacts; }
 .dash-card--location { grid-area: location; }
 .dash-card--alerts { grid-area: alerts; }
@@ -600,6 +602,7 @@
       "alert"
       "welcome"
       "sos"
+      "helplines"
       "contacts"
       "location"
       "alerts"

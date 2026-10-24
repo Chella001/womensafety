@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/helplines.css">
   <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
@@ -38,6 +39,7 @@
       <nav class="dash-nav" aria-label="Dashboard sections">
         <a href="#sos">SOS</a>
         <a href="#contacts">Contacts</a>
+        <a href="#helplines">Helplines</a>
         <a href="#location">Location</a>
         <a href="#alerts">Activity</a>
         <a href="#tips">Tips</a>
@@ -113,6 +115,12 @@
         <p class="testmode-banner" id="sos-testmode-card" hidden>
           <strong>TEST MODE</strong> — messages are simulated. Nothing is sent to anyone.
         </p>
+      </section>
+
+      <section class="dash-card dash-card--helplines" id="helplines" style="--i:2" aria-labelledby="helplines-title">
+        <h2 class="dash-card__title" id="helplines-title">Helplines</h2>
+        <p class="hint">Public numbers in India, answered by public services. Tapping one opens your phone's dialer — SafeHer is not part of the call and does not contact anyone for you.</p>
+        <ul class="helplines" id="helplines-list" aria-label="Helpline numbers"></ul>
       </section>
 
       <section class="dash-card dash-card--contacts" id="contacts" style="--i:2" aria-labelledby="contacts-title">
@@ -245,7 +253,7 @@
           <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Tell someone your plan.</strong> Share where you're going and when you expect to arrive.</span></li>
           <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Keep your phone ready.</strong> Charge it, and put your emergency contacts on speed dial.</span></li>
           <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Stay on lit, busy routes</strong> at night and keep one ear free of headphones.</span></li>
-          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Know your emergency number.</strong> In India, dial <a href="tel:112">112</a> for police, fire and ambulance.</span></li>
+          <li><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#bulb"/></svg><span><strong>Know your helplines.</strong> The <a href="#helplines">Helplines</a> card lists the numbers to call — save them in your phone too.</span></li>
         </ul>
       </section>
 
@@ -321,9 +329,9 @@
           and the SafeHer safety team. <strong>SafeHer does not contact the police or any emergency service</strong> and cannot guarantee
           that anyone reads a message in time. If you are in danger, call for help now:
         </p>
-        <a class="btn btn--sos" id="sos-call-emergency" href="tel:112">
+        <a class="btn btn--sos" id="sos-call-emergency" href="#">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#phone"/></svg>
-          <span>Call <span id="sos-number">112</span></span>
+          <span>Call <span id="sos-number"></span></span>
         </a>
         <p class="dash-note" id="sos-recipients">
           <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#info"/></svg>

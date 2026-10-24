@@ -1,6 +1,7 @@
 import { api, ApiError } from "./api.js";
 import { isConfigured, logout, waitForUser } from "./auth.js";
 import { initEmergencyContacts } from "./emergency-contacts.js";
+import { renderHelplines } from "./helplines.js";
 import { initLocation } from "./location.js";
 import { initReports } from "./reports.js";
 import { initSos } from "./sos.js";
@@ -156,6 +157,9 @@ function initAccount() {
 }
 
 async function init() {
+  // Helplines never depend on the API or the sign-in: they are shown even if everything else fails.
+  renderHelplines($("helplines-list"));
+
   if (!isConfigured()) {
     leave();
     return;
