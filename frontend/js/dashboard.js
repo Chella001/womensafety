@@ -7,6 +7,7 @@ import { initNearby } from "./nearby.js";
 import { initOnboarding } from "./onboarding.js";
 import { initReports } from "./reports.js";
 import { initSos } from "./sos.js";
+import { initSosDrill } from "./sos-drill.js";
 import {
   clearErrorOnInput,
   formatDateTime,
@@ -28,7 +29,8 @@ const alertBox = $("form-alert");
 const logoutButtons = [$("logout-btn"), $("logout-btn-2"), $("menu-logout")];
 
 let currentUser = null;
-const onboarding = initOnboarding();
+let drill = null;
+const onboarding = initOnboarding({ onStartDrill: (trigger) => drill?.open(trigger) });
 
 /** A fresh ID token for every API call (the Firebase SDK refreshes it shortly before it expires). */
 const getToken = () => currentUser.getIdToken();
@@ -195,6 +197,12 @@ async function init() {
 
   const contacts = initEmergencyContacts({ getToken, onUnauthorized, onChange: (list) => onboarding.setContacts(list) });
   initSos({ getToken, getContacts: () => contacts.getContacts(), onUnauthorized });
+  drill = initSosDrill({
+    getToken,
+    getContacts: () => contacts.getContacts(),
+    onUnauthorized,
+    onCompleted: (profile) => onboarding.setProfile(profile),
+  });
   initReports({ getToken, onUnauthorized });
   initLocation();
   initAccount();

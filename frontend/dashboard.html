@@ -125,6 +125,10 @@
         <p class="testmode-banner" id="sos-testmode-card" hidden>
           <strong>TEST MODE</strong> — messages are simulated. Nothing is sent to anyone.
         </p>
+        <button class="btn btn--outline btn--inline" type="button" id="drill-btn" aria-haspopup="dialog">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#shield-sos"/></svg>
+          <span>Practise SOS (drill)</span>
+        </button>
       </section>
 
       <section class="dash-card dash-card--helplines" id="helplines" style="--i:2" aria-labelledby="helplines-title">
@@ -409,6 +413,59 @@
             <span class="btn__label">Cancel this alert</span>
             <span class="btn__spinner" aria-hidden="true"></span>
           </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- SOS practice drill: a separate dialog with no path to the alert API -->
+  <dialog class="dialog" id="drill-dialog" aria-labelledby="drill-title">
+    <div class="dialog__form">
+      <h2 class="dialog__title" id="drill-title">SOS practice drill</h2>
+      <p class="drill-banner" id="drill-banner"><strong>PRACTICE ONLY</strong> — no alert is created, nothing is sent and nobody is contacted.</p>
+
+      <div class="form-alert" id="drill-alert" data-type="error" aria-live="assertive">
+        <div class="form-alert__inner">
+          <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+          <span class="form-alert__text" id="drill-alert-text"></span>
+        </div>
+      </div>
+
+      <div id="drill-step-practice">
+        <p class="dialog__text">This walks through what happens when you press <strong>SOS</strong>, so you know what to expect.</p>
+        <ol class="drill-steps">
+          <li>In a real emergency you press <strong>SOS</strong>, then <strong>Create SOS alert</strong>. The alert is saved even if your location can't be found.</li>
+          <li>The red button in that dialog calls <strong id="drill-number"></strong>. <em>In this practice it is not a link, so nothing is dialled.</em></li>
+          <li>Who would be messaged: <span id="drill-recipients"></span></li>
+          <li>SafeHer does <strong>not</strong> contact the police or any emergency service — call them yourself.</li>
+        </ol>
+        <div class="drill-call" aria-hidden="true">
+          <svg class="icon"><use href="assets/icons/sprite.svg#phone"/></svg>
+          <span>Real dialog: <strong>Call <span id="drill-number-2"></span></strong> (disabled in practice)</span>
+        </div>
+        <label class="checkbox checkbox--consent">
+          <input type="checkbox" id="drill-check-location">
+          <span class="checkbox__box" aria-hidden="true"><svg class="icon"><use href="assets/icons/sprite.svg#check"/></svg></span>
+          <span class="checkbox__label">Check that my location can be found (practice: it is shown here and not sent or saved)</span>
+        </label>
+        <div class="dialog__actions">
+          <button class="btn btn--ghost" type="button" id="drill-close">Close</button>
+          <button class="btn btn--primary" type="button" id="drill-run">
+            <span class="btn__label">Practise: create alert</span>
+            <span class="btn__spinner" aria-hidden="true"></span>
+          </button>
+        </div>
+      </div>
+
+      <div id="drill-step-done" hidden>
+        <p class="dialog__text"><strong>Practice complete.</strong> No alert was created and nothing was sent.</p>
+        <p class="dialog__text">In a real alert you would now see <strong>Alert created</strong> and, separately, the message status — for example <em>Processing</em>, then <em>Accepted by SMS provider</em> or <em>Nobody was messaged</em>. You could cancel the alert from that screen.</p>
+        <dl class="facts">
+          <div><dt>Location check</dt><dd id="drill-location-result">—</dd></div>
+          <div><dt>Checklist</dt><dd id="drill-saved">—</dd></div>
+        </dl>
+        <div class="dialog__actions">
+          <button class="btn btn--primary" type="button" id="drill-done-close">Finish</button>
         </div>
       </div>
     </div>

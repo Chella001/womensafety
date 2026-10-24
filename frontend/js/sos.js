@@ -49,6 +49,19 @@ function locationStatusFor(error) {
   return { 1: "PERMISSION_DENIED", 2: "UNAVAILABLE", 3: "TIMEOUT" }[error?.code] ?? "UNAVAILABLE";
 }
 
+/** Who an SOS would message, in words. Shared by the real SOS dialog and the practice drill. */
+export function recipientSummary(contacts, testMode) {
+  const eligible = contacts.filter((c) => c.eligible);
+  const simulated = testMode ? " (simulated in test mode)" : "";
+  if (eligible.length > 0) {
+    return `${eligible.length} verified contact(s) would be messaged${simulated}: ${eligible.map((c) => c.name).join(", ")}. The alert also appears in the SafeHer admin console, which may not be watched at all times.`;
+  }
+  if (contacts.length > 0) {
+    return `None of your ${contacts.length} contact(s) is verified and has agreed to messages yet, so nobody would be messaged. Verify a contact under Emergency contacts, or call someone yourself now.`;
+  }
+  return "You have no emergency contacts, so nobody would be messaged. Add and verify a contact, or call someone yourself now.";
+}
+
 const newKey = () => (crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}-${Math.random().toString(16).slice(2)}`);
 
 /**
@@ -197,17 +210,7 @@ export function initSos({ getToken, getContacts, onUnauthorized }) {
   /* ---------- dialog ---------- */
 
   function describeRecipients() {
-    const contacts = getContacts();
-    const eligible = contacts.filter((c) => c.eligible);
-    const text = $("sos-recipients-text");
-    const simulated = info.testMode ? " (simulated in test mode)" : "";
-    if (eligible.length > 0) {
-      text.textContent = `${eligible.length} verified contact(s) would be messaged${simulated}: ${eligible.map((c) => c.name).join(", ")}. The alert also appears in the SafeHer admin console, which may not be watched at all times.`;
-    } else if (contacts.length > 0) {
-      text.textContent = `None of your ${contacts.length} contact(s) is verified and has agreed to messages yet, so nobody would be messaged. Verify a contact under Emergency contacts, or call someone yourself now.`;
-    } else {
-      text.textContent = "You have no emergency contacts, so nobody would be messaged. Add and verify a contact, or call someone yourself now.";
-    }
+    $("sos-recipients-text").textContent = recipientSummary(getContacts(), info.testMode);
   }
 
   async function showConfirm() {

@@ -117,6 +117,8 @@ export const api = {
   /* ----- profile ----- */
   me: get("/users/me"),
   updateMe: (token, fullName) => request("/users/me", { method: "PATCH", token, body: { fullName } }),
+  /** Records that the user finished an SOS practice drill (a profile flag only: no alert, nothing sent). */
+  markSosDrill: (token) => request("/users/me/sos-drill", { method: "POST", token }),
 
   /* ----- emergency contacts ----- */
   listContacts: get("/emergency-contacts"),
