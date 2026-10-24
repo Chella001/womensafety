@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Help · SafeHer</title>
+  <meta name="description" content="Answers about SafeHer: SOS, emergency contacts, location, test mode, privacy and sign-in problems.">
+  <meta name="theme-color" content="#f6edff">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/helplines.css">
+  <link rel="stylesheet" href="css/public.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="pub">
+    <div class="pub-glow" aria-hidden="true"></div>
+
+    <header class="pub-header">
+      <a class="brand__link" href="home.html" aria-label="SafeHer home">
+        <img class="brand__logo" src="assets/icons/logo.svg" alt="" width="52" height="56">
+        <span class="brand__text">
+          <span class="brand__name">Safe<span>Her</span></span>
+          <span class="brand__tagline">A Safer Tomorrow</span>
+        </span>
+      </a>
+      <nav class="pub-nav" aria-label="Site">
+        <a class="pub-nav__link" href="home.html">Home</a>
+        <a class="pub-nav__link" href="help.html" aria-current="page">Help</a>
+        <a class="btn btn--outline" href="login.html">Log in</a>
+        <a class="btn btn--primary" href="register.html">Create account</a>
+      </nav>
+    </header>
+
+    <main class="pub-main" id="main">
+      <section class="pub-card" aria-labelledby="help-title">
+        <h1 class="pub-h2" id="help-title">Help and questions</h1>
+        <p class="pub-lead">If you are in danger right now, don't read this page — call <a href="#" data-emergency-call><strong data-emergency-number></strong></a>. SafeHer is not an emergency service and never contacts the police for you.</p>
+      </section>
+
+      <section class="pub-card" aria-labelledby="sos-q">
+        <h2 class="pub-h2" id="sos-q">SOS</h2>
+        <div class="faq">
+          <details>
+            <summary>What happens when I press SOS?</summary>
+            <ul>
+              <li>An alert is saved to your account, even if your location can't be found.</li>
+              <li>SafeHer tries to text every emergency contact who has agreed and verified their number. Your location is included only if you ticked "Share my current location".</li>
+              <li>The alert appears in the SafeHer admin console, and registered admin devices get a short notice. The console may not be watched at all times.</li>
+              <li>You then see two separate things: <strong>Alert created</strong>, and the message status.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>What do the message statuses mean?</summary>
+            <ul>
+              <li><strong>Processing</strong> — messages are still being sent or retried.</li>
+              <li><strong>Nobody was messaged</strong> — none of your contacts is verified and has agreed yet.</li>
+              <li><strong>Test only — nothing sent</strong> — SafeHer is in test mode; messages are simulated.</li>
+              <li><strong>Accepted by SMS provider</strong> — the SMS service took the message. That does not prove the person received it.</li>
+              <li><strong>Delivered</strong> — the SMS service reported delivery to the phone.</li>
+              <li><strong>Partially delivered</strong> / <strong>Delivery failed</strong> — some or all messages could not be sent. Call your contacts yourself.</li>
+            </ul>
+          </details>
+          <details>
+            <summary>I pressed SOS by mistake. What now?</summary>
+            <p>Press <strong>Cancel this alert</strong> on the SOS screen or in Recent activity. Messages that were not sent yet are stopped. Messages already sent cannot be recalled, so you may want to tell your contacts you are safe.</p>
+          </details>
+          <details>
+            <summary>Can I try SOS without sending anything?</summary>
+            <p>Yes. On the dashboard, press <strong>Practise SOS (drill)</strong>. It walks through the same steps, creates no alert, sends nothing and does not dial any number. Finishing it ticks the "Get ready" checklist.</p>
+          </details>
+          <details>
+            <summary>What does "test mode" mean?</summary>
+            <p>While SafeHer runs in test mode, every SOS message and verification code is simulated: nothing is sent to anyone. The app shows a TEST MODE label wherever this matters.</p>
+          </details>
+          <details>
+            <summary>Does SafeHer call the police, an ambulance or the fire service?</summary>
+            <p>No, never. Call <span data-emergency-number></span> or one of the helplines below yourself.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="pub-card" aria-labelledby="contacts-q">
+        <h2 class="pub-h2" id="contacts-q">Emergency contacts</h2>
+        <div class="faq">
+          <details>
+            <summary>Why does a contact need to be verified?</summary>
+            <p>So messages go only to a correct number belonging to someone who agreed to receive them. You tick that the person agreed, then SafeHer texts them a 6-digit code which they read back to you. Your own sign-in never verifies someone else's number.</p>
+          </details>
+          <details>
+            <summary>How many contacts can I add?</summary>
+            <p>Up to five. Changing a contact's phone number removes their verification, so they need to confirm the new number.</p>
+          </details>
+          <details>
+            <summary>Does adding a contact send them anything?</summary>
+            <p>No. Only pressing <strong>Verify</strong> sends them a code (simulated in test mode), and only an SOS sends them an alert message.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="pub-card" aria-labelledby="privacy-q">
+        <h2 class="pub-h2" id="privacy-q">Location and privacy</h2>
+        <div class="faq">
+          <details>
+            <summary>Does SafeHer track my location?</summary>
+            <p>No. Your browser's location is read only when you press a button that needs it — "Show my current location", "Use my location" under Nearby help, or SOS with "Share my current location" ticked. It is saved only in that last case, as part of the alert.</p>
+          </details>
+          <details>
+            <summary>What does "Nearby help" share?</summary>
+            <p>It opens a Google Maps search in a new tab, so Google sees your search. If you pressed "Use my location" first, Google also sees those coordinates. SafeHer itself sends and stores nothing for this.</p>
+          </details>
+          <details>
+            <summary>What does SafeHer store about me, and for how long?</summary>
+            <ul>
+              <li>Your name, verified phone number and the date you accepted the terms.</li>
+              <li>Your emergency contacts (name, number, relationship, whether they verified and agreed).</li>
+              <li>Your SOS alerts with their message status, and your location only if you chose to share it. Closed alerts are deleted automatically after the retention period (90 days by default).</li>
+              <li>Incident reports you file, and whether you finished an SOS drill.</li>
+            </ul>
+            <p>Deleting your whole account from inside the app is not available yet.</p>
+          </details>
+          <details>
+            <summary>Who can see my alerts?</summary>
+            <p>You, and the SafeHer administrators. Lists show administrators only masked numbers; opening an alert's details (including any location) is recorded in an audit log.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="pub-card" aria-labelledby="signin-q">
+        <h2 class="pub-h2" id="signin-q">Sign-in problems</h2>
+        <div class="faq">
+          <details>
+            <summary>I didn't get a code</summary>
+            <p>Check the country and the number, then wait 30 seconds and press <strong>Resend code</strong>. If no code arrives after that, SMS to your number may not be available right now; try again later.</p>
+          </details>
+          <details>
+            <summary>A picture puzzle appeared</summary>
+            <p>That is Google's reCAPTCHA check, which protects the sign-in from abuse. Complete it and the code is sent.</p>
+          </details>
+          <details>
+            <summary>The page says "Something went wrong" with a code in brackets</summary>
+            <p>Reload the page completely (Ctrl+F5 on a computer) and try again. If it happens again, note the code in brackets — it tells the SafeHer team what failed.</p>
+          </details>
+          <details>
+            <summary>It says my account is suspended</summary>
+            <p>An administrator has paused the account, and it can't be used until they reactivate it.</p>
+          </details>
+        </div>
+      </section>
+
+      <section class="pub-card" id="helplines" aria-labelledby="helplines-title">
+        <h2 class="pub-h2" id="helplines-title">Helplines in India</h2>
+        <p class="pub-lead">Answered by public services, not by SafeHer. Tap a number to open your phone's dialer.</p>
+        <ul class="helplines helplines--spaced" id="helplines-list" aria-label="Helpline numbers"></ul>
+      </section>
+    </main>
+
+    <footer class="pub-footer">
+      <div class="pub-footer__inner">
+        <span>© <span id="year"></span> SafeHer · Not an emergency service — in danger, call <a href="#" data-emergency-call><span data-emergency-number></span></a>.</span>
+        <nav aria-label="Footer">
+          <a href="home.html">Home</a>
+          <a href="login.html">Log in</a>
+          <a href="register.html">Create account</a>
+          <a href="terms.html">Terms</a>
+          <a href="privacy.html">Privacy</a>
+        </nav>
+      </div>
+    </footer>
+  </div>
+  <script type="module" src="js/public.js"></script>
+</body>
+</html>

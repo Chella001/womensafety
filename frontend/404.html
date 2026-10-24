@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Page not found · SafeHer</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#f6edff">
+  <!--
+    This page can be served at any URL depth, so it cannot use relative paths. Each asset is linked from both possible
+    roots: "/frontend/" (Live Server on the project folder) and "/" (hosting with frontend/ as the web root). Only one of
+    each pair exists in a given setup; the other simply fails to load. Links and the logo are set by js/public.js,
+    which resolves them relative to its own location.
+  -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap">
+  <link rel="stylesheet" href="/frontend/css/styles.css">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/frontend/css/public.css">
+  <link rel="stylesheet" href="/css/public.css">
+</head>
+<body>
+  <div class="pub">
+    <div class="pub-glow" aria-hidden="true"></div>
+
+    <header class="pub-header">
+      <a class="brand__link" data-href="home.html" href="/" aria-label="SafeHer home">
+        <img class="brand__logo" data-src="assets/icons/logo.svg" alt="" width="52" height="56">
+        <span class="brand__text">
+          <span class="brand__name">Safe<span>Her</span></span>
+          <span class="brand__tagline">A Safer Tomorrow</span>
+        </span>
+      </a>
+    </header>
+
+    <main class="pub-main" id="main">
+      <section class="pub-card notfound" aria-labelledby="nf-title">
+        <p class="notfound__code" aria-hidden="true">404</p>
+        <h1 class="pub-h2" id="nf-title">This page doesn't exist</h1>
+        <p class="pub-lead">The link may be old or mistyped. Nothing was changed in your account.</p>
+        <div class="hero__actions">
+          <a class="btn btn--primary" data-href="home.html" href="/" id="nf-home">Go to the home page</a>
+          <a class="btn btn--outline" data-href="login.html" href="/" id="nf-login">Log in</a>
+          <a class="btn btn--outline" data-href="help.html" href="/" id="nf-help">Help</a>
+        </div>
+        <p class="hero__urgent" role="note"><strong>In danger?</strong> Call <a href="#" data-emergency-call><span data-emergency-number></span></a> now. SafeHer is not an emergency service.</p>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="/frontend/js/public.js"></script>
+  <script type="module" src="/js/public.js"></script>
+</body>
+</html>
