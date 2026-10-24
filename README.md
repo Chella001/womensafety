@@ -5,15 +5,18 @@ administrator console. Development-stage project: **it is not an emergency dispa
 [What is real and what is not](#what-is-real-and-what-is-not)).
 
 ```
+index.html         forwards Live Server's root to frontend/home.html (on localhost)
 frontend/          HTML + CSS + vanilla JS (static files, no build step)
+  home.html help.html 404.html          public pages (no sign-in)
   login.html register.html dashboard.html terms.html privacy.html
-  admin/index.html           administrator console
-  css/                       styles.css animations.css dashboard.css admin.css
-  js/                        config.js auth.js api.js ui.js phone.js phone-flow.js
-                             login.js register.js dashboard.js emergency-contacts.js
-                             sos.js reports.js location.js admin.js
+  admin/login.html admin/index.html     administrator login and console
+  css/                       styles.css animations.css dashboard.css admin.css helplines.css public.css
+  js/                        config.js (incl. the helpline numbers) auth.js api.js ui.js phone.js phone-flow.js
+                             login.js register.js dashboard.js emergency-contacts.js sos.js sos-drill.js
+                             onboarding.js helplines.js nearby.js public.js reports.js location.js admin*.js
 backend/           Spring Boot 3.5 · Java 17+ · Maven (wrapper included)
-  src/main/java/com/womensafety/{config,controller,service,repository,model,dto,security,validation,exception}
+  src/main/java/com/womensafety/{config,controller,service,notification,repository,model,dto,security,validation,exception}
+tests/ui/          browser UI suite (headless Edge, fake Firebase, mock API) — see tests/ui/README.md
 firestore.rules    deny-all rules (only the backend touches Firestore)
 ```
 
@@ -81,7 +84,7 @@ domain under **Authentication → Settings → Authorized domains** when you dep
 
 | Path | Contents |
 |---|---|
-| `users/{uid}` | `fullName`, `phoneNumber` (E.164, from the token), `phoneVerified`, `role` (always `USER`), `accountStatus`, `createdAt`, `updatedAt`, `lastLoginAt`, `consentVersion`, `consentTimestamp` |
+| `users/{uid}` | `fullName`, `phoneNumber` (E.164, from the token), `phoneVerified`, `role` (always `USER`), `accountStatus`, `createdAt`, `updatedAt`, `lastLoginAt`, `consentVersion`, `consentTimestamp`, `sosDrillCompletedAt` (set when the user finishes an SOS practice drill) |
 | `users/{uid}/emergencyContacts/{id}` | `name`, `phoneNumber` (E.164), `relationship`, `createdAt`, `updatedAt` |
 | `emergencyAlerts/{id}` | `uid`, `status` (ACTIVE/CANCELLED), timestamps, optional `location` (only if the user ticked "include"), `deliveryStatus`, `deliveryNote`, `contactsNotified`, `retainUntil` |
 | `incidentReports/{id}` | `uid`, `category`, `description`, `status`, timestamps, resolution fields |
@@ -146,22 +149,27 @@ Environment variables (all optional except credentials):
 
 SOS, SMS, push and limits have their own variables: see *SOS emergency alert system* below.
 
-Frontend: open the project folder in VS Code and press **Go Live** (port 5500). The root `index.html` forwards to
-<http://localhost:5500/frontend/login.html> — and switches `127.0.0.1` to `localhost`, because Firebase phone sign-in
-only works on authorised domains and the API's CORS list expects `localhost`. The admin login is
-<http://localhost:5500/frontend/admin/login.html>. (`file://` does not work — ES modules.)
+Frontend: open the project folder in VS Code and press **Go Live** (port 5500). The root `index.html` forwards to the
+public landing page <http://localhost:5500/frontend/home.html> — and switches `127.0.0.1` to `localhost`, because
+Firebase phone sign-in only works on authorised domains and the API's CORS list expects `localhost`. Log in at
+`frontend/login.html`; the admin login is <http://localhost:5500/frontend/admin/login.html>. (`file://` does not work —
+ES modules.)
 
 ## Tests
 
 ```powershell
 cd backend
-.\mvnw.cmd verify        # 119 tests, no network and no Firebase project needed
+.\mvnw.cmd verify        # 196 tests, no network and no Firebase project needed
 ```
 They run the real security filter chain and controllers with **Firebase Auth and the Firestore repositories mocked**:
 token handling (missing / forged / non-phone), registration validation, role self-assignment attempts, ownership of
 profiles / contacts / alerts, suspended accounts, admin-only access (and an empty allow-list), audit logging, rate limits,
 CORS and security headers, the admin panel (alert acknowledge/resolve transitions, filters, pagination, reports and CSV,
 audit outcomes, legacy profiles), plus unit tests for phone normalisation and name validation.
+
+**Browser UI suite** (`tests/ui`, 105 checks): the real frontend in headless Edge against a fake Firebase SDK and a mock
+API — public pages, helplines, nearby help, the onboarding checklist, the SOS drill, a regression of the real SOS flow and
+responsive layout at 1440/768/390 px. Run `node tests/ui/run.mjs` (Node 22+; see `tests/ui/README.md`).
 
 **Not covered by automated tests (needs your Firebase set-up):** a real phone sign-in with a test number, and the
 Firestore repository classes against a real database. See the report for what was exercised by hand.
@@ -177,6 +185,10 @@ revoked token, or a suspended account → sign out and back to login with a mess
 | Header: logo, section navigation, **profile menu** (name, phone, Account settings, Admin console for the admin only, Log out) and a Log out button | `GET /api/users/me` |
 | Welcome: "Welcome back, <name>", account status, phone-verified status | `GET /api/users/me` |
 | Emergency SOS: two-step dialog → alert created, **notification status shown separately** (live), cancel request; opt-in location; real `tel:` links; TEST MODE banner | `GET /api/sos/info`, `POST /api/sos`, `GET /api/sos/{id}/me`, `POST /api/sos/{id}/cancel` |
+| **Get ready** checklist: add a contact, verify a consenting contact, do an SOS drill. Built only from real data (hidden until both the profile and the contact list loaded); disappears when all three are done | `GET /api/users/me` (`sosDrillCompletedAt`), `GET /api/emergency-contacts` |
+| **SOS drill**: a separate PRACTICE ONLY dialog. No alert is created, nothing is sent, the emergency number is shown as text (not a `tel:` link) so practice cannot dial; optional location check that is not sent or saved. Finishing sets a profile flag | `POST /api/users/me/sos-drill` only |
+| **Helplines**: 112, 1091, 181, 100, 1930 as tap-to-call links with a short description. The numbers exist only in `js/config.js` (`helplines`; `emergencyNumber` is derived from it) and are shown even if the API fails | none (static) |
+| **Nearby help**: Google Maps search links for police stations and hospitals. The browser location is requested only after "Use my location" is pressed, is written into the two links and is neither sent to SafeHer nor stored | none (Google Maps in a new tab) |
 | Emergency contacts: add / edit / delete (with confirmation), **consent + verification code**, duplicate and own-number checks, configurable limit | `/api/emergency-contacts` (GET, POST, PATCH, DELETE, `…/verification`) |
 | Location status: permission state, button to request it, explanation of why | browser Geolocation API (nothing stored) |
 | Recent activity: your alerts with creation and notification status | `GET /api/sos/me` |
@@ -184,6 +196,16 @@ revoked token, or a suspended account → sign out and back to login with a mess
 | Account: edit name, account id, sign out of all devices | `PATCH /api/users/me`, `POST /api/auth/logout-all` |
 
 Every section shows loading, empty and error states from the real response; there is no sample data.
+
+## Public pages (no sign-in)
+
+| Page | Content |
+|---|---|
+| `frontend/home.html` | What SafeHer is and is not (not an emergency service, never contacts the police, TEST mode simulates messages), how it works in 3 steps, helplines, short FAQ, links to login / register / help / terms / privacy. The project root opens this page. |
+| `frontend/help.html` | Full FAQ: SOS and message statuses, cancelling, the drill, test mode, contact verification, location and privacy (what is stored, for how long, who can see it; account deletion is not available in the app yet), sign-in problems, helplines. |
+| `frontend/404.html` | Not-found page that works at any URL depth. Static hosts such as Firebase Hosting serve it automatically for unknown paths; VS Code Live Server does not use it (open it directly to see it). |
+
+They use `js/public.js` (helplines and the emergency number from `config.js`, no API calls, nothing stored).
 
 ## The admin panel (`frontend/admin/`)
 
@@ -342,6 +364,7 @@ user's own ID token gets `403` reading `emergencyAlerts` and `users` and creatin
 | `GET /api/sos/me`, `GET /api/sos/{id}/me` | own alerts / one own alert with notification status |
 | `POST /api/sos/{id}/cancel` | cancellation request |
 | `POST /api/emergency-contacts/{id}/verification`, `…/verification/confirm` | send / confirm a code |
+| `POST /api/users/me/sos-drill` | marks a practice drill as finished (own profile flag only; creates no alert, sends nothing) |
 
 | Admin (`ROLE_ADMIN` only) | |
 |---|---|
