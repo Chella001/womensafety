@@ -131,8 +131,21 @@
 }
 
 .dash-alert { grid-area: alert; }
+
+/* While the "Get ready" checklist is shown it gets its own row (the class is toggled by js/onboarding.js). */
+.dash-main.dash-main--onboarding {
+  grid-template-areas:
+    "alert      alert"
+    "welcome    sos"
+    "onboarding onboarding"
+    "helplines  nearby"
+    "contacts   location"
+    "alerts     reports"
+    "tips       profile";
+}
 .dash-card--welcome { grid-area: welcome; }
 .dash-card--sos { grid-area: sos; }
+.dash-card--onboarding { grid-area: onboarding; }
 .dash-card--helplines { grid-area: helplines; }
 .dash-card--nearby { grid-area: nearby; }
 .dash-card--contacts { grid-area: contacts; }
@@ -603,6 +616,22 @@
       "alert"
       "welcome"
       "sos"
+      "helplines"
+      "nearby"
+      "contacts"
+      "location"
+      "alerts"
+      "reports"
+      "tips"
+      "profile";
+  }
+
+  .dash-main.dash-main--onboarding {
+    grid-template-areas:
+      "alert"
+      "welcome"
+      "sos"
+      "onboarding"
       "helplines"
       "nearby"
       "contacts"

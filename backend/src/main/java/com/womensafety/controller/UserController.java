@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,15 @@ public class UserController {
     public ResponseEntity<UserProfileResponse> update(
             @AuthenticationPrincipal FirebaseUserPrincipal principal, @Valid @RequestBody UpdateProfileRequest request) {
         return respond(userService.updateFullName(principal.uid(), request.fullName()), principal);
+    }
+
+    /**
+     * Marks an SOS practice drill as finished (server time). Creates no alert and sends nothing; it only lets the
+     * dashboard's onboarding checklist tick off the drill step.
+     */
+    @PostMapping("/me/sos-drill")
+    public ResponseEntity<UserProfileResponse> sosDrill(@AuthenticationPrincipal FirebaseUserPrincipal principal) {
+        return respond(userService.recordSosDrill(principal.uid()), principal);
     }
 
     private static ResponseEntity<UserProfileResponse> respond(

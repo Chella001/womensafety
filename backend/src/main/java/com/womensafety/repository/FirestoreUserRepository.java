@@ -106,6 +106,7 @@ public class FirestoreUserRepository implements UserRepository {
         document.put("lastLoginAt", toTimestamp(profile.lastLoginAt()));
         document.put("consentVersion", profile.consentVersion());
         document.put("consentTimestamp", toTimestamp(profile.consentTimestamp()));
+        document.put("sosDrillCompletedAt", toTimestamp(profile.sosDrillCompletedAt()));
         return document;
     }
 
@@ -121,7 +122,8 @@ public class FirestoreUserRepository implements UserRepository {
                 toInstant(s.getTimestamp("updatedAt")),
                 toInstant(s.getTimestamp("lastLoginAt")),
                 s.getString("consentVersion"),
-                toInstant(s.getTimestamp("consentTimestamp")));
+                toInstant(s.getTimestamp("consentTimestamp")),
+                toInstant(s.getTimestamp("sosDrillCompletedAt")));
     }
 
     /** Profiles written by the first (e-mail based) version have {@code displayName} instead of {@code fullName}. */

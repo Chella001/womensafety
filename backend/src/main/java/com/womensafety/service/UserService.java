@@ -77,6 +77,15 @@ public class UserService {
     }
 
     /**
+     * Records that the user finished an SOS practice drill. Nothing else happens: a drill never creates an alert,
+     * never sends a message and never touches the alert or notification collections.
+     */
+    public UserProfile recordSosDrill(String uid) {
+        UserProfile profile = requireProfile(uid);
+        return userRepository.save(profile.withSosDrillCompletedAt(currentTime()));
+    }
+
+    /**
      * Signs the user out everywhere by revoking all of their Firebase refresh tokens. Their current ID tokens are
      * rejected immediately because the backend verifies tokens with the revocation check enabled.
      */

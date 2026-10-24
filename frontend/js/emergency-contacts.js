@@ -88,10 +88,11 @@ export function contactRow(contact, actions) {
 }
 
 /**
- * @param {{ getToken: () => Promise<string>, onUnauthorized: () => void }} options
+ * @param {{ getToken: () => Promise<string>, onUnauthorized: () => void, onChange?: (contacts: object[]) => void }} options
+ *        onChange is called with the real list after it has loaded and after every change (never with placeholder data).
  * @returns {{ getContacts: () => object[] }}
  */
-export function initEmergencyContacts({ getToken, onUnauthorized }) {
+export function initEmergencyContacts({ getToken, onUnauthorized, onChange }) {
   const $ = (id) => document.getElementById(id);
   const list = $("contact-list");
   const empty = $("contacts-empty");
@@ -106,6 +107,7 @@ export function initEmergencyContacts({ getToken, onUnauthorized }) {
   const submit = $("contact-submit");
 
   let contacts = [];
+  let loaded = false; // true once the real list has arrived from the API
   let adding = false;
   let maxContacts = DEFAULT_MAX_CONTACTS;
   loadSosInfo(getToken).then((info) => {
@@ -134,11 +136,13 @@ export function initEmergencyContacts({ getToken, onUnauthorized }) {
     } else if (alertBox.dataset.type === "info") {
       hideAlert(alertBox);
     }
+    if (loaded) onChange?.(contacts);
   }
 
   async function load() {
     try {
       contacts = await api.listContacts(await getToken());
+      loaded = true;
       render();
     } catch (error) {
       loading.hidden = true;

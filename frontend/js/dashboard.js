@@ -4,6 +4,7 @@ import { initEmergencyContacts } from "./emergency-contacts.js";
 import { renderHelplines } from "./helplines.js";
 import { initLocation } from "./location.js";
 import { initNearby } from "./nearby.js";
+import { initOnboarding } from "./onboarding.js";
 import { initReports } from "./reports.js";
 import { initSos } from "./sos.js";
 import {
@@ -27,6 +28,7 @@ const alertBox = $("form-alert");
 const logoutButtons = [$("logout-btn"), $("logout-btn-2"), $("menu-logout")];
 
 let currentUser = null;
+const onboarding = initOnboarding();
 
 /** A fresh ID token for every API call (the Firebase SDK refreshes it shortly before it expires). */
 const getToken = () => currentUser.getIdToken();
@@ -130,7 +132,9 @@ function initAccount() {
     saving = true;
     setBusy(save, true, "Saving…");
     try {
-      renderProfile(await api.updateMe(await getToken(), input.value.trim()));
+      const updated = await api.updateMe(await getToken(), input.value.trim());
+      renderProfile(updated);
+      onboarding.setProfile(updated);
       showAlert(accountAlert, "success", "Your name was updated.");
     } catch (error) {
       if (error instanceof ApiError && (error.status === 401 || error.code === "ACCOUNT_SUSPENDED")) return onUnauthorized(error);
@@ -174,7 +178,9 @@ async function init() {
       return;
     }
     // The page is only "protected" because the backend verifies the token before returning anything.
-    renderProfile(await api.me(await getToken()));
+    const profile = await api.me(await getToken());
+    renderProfile(profile);
+    onboarding.setProfile(profile);
   } catch (error) {
     if (error instanceof ApiError && [401, 403].includes(error.status)) {
       await onUnauthorized(error);
@@ -187,7 +193,7 @@ async function init() {
     return;
   }
 
-  const contacts = initEmergencyContacts({ getToken, onUnauthorized });
+  const contacts = initEmergencyContacts({ getToken, onUnauthorized, onChange: (list) => onboarding.setContacts(list) });
   initSos({ getToken, getContacts: () => contacts.getContacts(), onUnauthorized });
   initReports({ getToken, onUnauthorized });
   initLocation();

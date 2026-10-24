@@ -92,6 +92,36 @@ class UserApiTest extends ApiTestBase {
     }
 
     @Test
+    void sosDrill_recordsOnlyAProfileFlag_andNeverCreatesAnAlertOrNotification() throws Exception {
+        mockMvc.perform(get("/api/users/me").header(HttpHeaders.AUTHORIZATION, as("alice")))
+                .andExpect(jsonPath("$.sosDrillCompletedAt").doesNotExist());
+
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/users/me/sos-drill")
+                        .header(HttpHeaders.AUTHORIZATION, as("alice")))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.uid").value("uid-alice"))
+                .andExpect(jsonPath("$.sosDrillCompletedAt").isNotEmpty());
+
+        ArgumentCaptor<UserProfile> saved = ArgumentCaptor.forClass(UserProfile.class);
+        verify(users).save(saved.capture());
+        org.assertj.core.api.Assertions.assertThat(saved.getValue().uid()).isEqualTo("uid-alice");
+        org.assertj.core.api.Assertions.assertThat(saved.getValue().sosDrillCompletedAt()).isNotNull();
+        // the drill touches nothing but the caller's own profile
+        org.mockito.Mockito.verifyNoInteractions(alerts, deliveries, jobs, contacts, adminDevices);
+    }
+
+    @Test
+    void sosDrill_requiresAuthentication_andAPhoneToken() throws Exception {
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/users/me/sos-drill"))
+                .andExpect(status().isUnauthorized());
+        signIn("mallory", "uid-mallory", null, "password");
+        mockMvc.perform(org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post("/api/users/me/sos-drill")
+                        .header(HttpHeaders.AUTHORIZATION, as("mallory")))
+                .andExpect(status().isForbidden());
+        verify(users, never()).save(any());
+    }
+
+    @Test
     void suspendedUser_isRefusedOnEveryEndpoint() throws Exception {
         register("uid-alice", "Alice Rao", ALICE_PHONE, AccountStatus.SUSPENDED);
         mockMvc.perform(get("/api/users/me").header(HttpHeaders.AUTHORIZATION, as("alice")))
