@@ -123,6 +123,33 @@
         <ul class="helplines" id="helplines-list" aria-label="Helpline numbers"></ul>
       </section>
 
+      <section class="dash-card dash-card--nearby" id="nearby" style="--i:2" aria-labelledby="nearby-title">
+        <h2 class="dash-card__title" id="nearby-title">Nearby help</h2>
+        <p class="hint">Opens a Google Maps search in a new tab. Google sees what you search for — and your location only if you press "Use my location" first. SafeHer sends and stores nothing.</p>
+        <div class="nearby-links">
+          <a class="btn btn--outline" id="nearby-police" href="#" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#pin"/></svg>
+            <span>Police stations near me</span>
+          </a>
+          <a class="btn btn--outline" id="nearby-hospital" href="#" target="_blank" rel="noopener noreferrer">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#plus"/></svg>
+            <span>Hospitals near me</span>
+          </a>
+        </div>
+        <div class="form-alert" id="nearby-alert" data-type="error" aria-live="assertive">
+          <div class="form-alert__inner">
+            <svg class="icon form-alert__icon" aria-hidden="true"><use href="assets/icons/sprite.svg#alert"/></svg>
+            <span class="form-alert__text" id="nearby-alert-text"></span>
+          </div>
+        </div>
+        <button class="btn btn--ghost btn--inline" type="button" id="nearby-locate">
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#crosshair"/></svg>
+          <span class="btn__label">Use my location for these links</span>
+          <span class="btn__spinner" aria-hidden="true"></span>
+        </button>
+        <p class="hint" id="nearby-status" aria-live="polite"></p>
+      </section>
+
       <section class="dash-card dash-card--contacts" id="contacts" style="--i:2" aria-labelledby="contacts-title">
         <div class="dash-card__head">
           <h2 class="dash-card__title" id="contacts-title">Emergency contacts</h2>
